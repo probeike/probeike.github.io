@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Employer Comparison - Interactive Explainer</title>
+    <style>
+        :root {
+            --primary: #0891b2;
+            --primary-light: #22d3ee;
+            --primary-dark: #0e7490;
+            --secondary: #8b5cf6;
+            --success: #16a34a;
+            --success-light: #22c55e;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --neutral-50: #fafafa;
+            --neutral-100: #f5f5f5;
+            --neutral-200: #e5e5e5;
+            --neutral-300: #d4d4d4;
+            --neutral-400: #a3a3a3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+            --kernel-high: #22c55e;
+            --kernel-mid: #eab308;
+            --kernel-low: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--neutral-50);
+            color: var(--neutral-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--neutral-200);
+            padding: 24px 16px;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 12px;
+            color: var(--neutral-600);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: var(--neutral-100);
+            color: var(--neutral-900);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-section {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neutral-400);
+            margin: 20px 0 8px 12px;
+        }
+
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--neutral-700);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: var(--neutral-600);
+            margin-bottom: 16px;
+        }
+
+        .lead {
+            font-size: 18px;
+            color: var(--neutral-700);
+            margin-bottom: 24px;
+        }
+
+        /* Comparison Cards */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .compare-card {
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .compare-card.bad {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        .compare-card.good {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .compare-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .compare-card.bad h4 {
+            color: var(--danger);
+        }
+
+        .compare-card.good h4 {
+            color: var(--success);
+        }
+
+        /* Interactive Visualizations */
+        .viz-container {
+            background: var(--neutral-800);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .viz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .viz-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .viz-controls {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .viz-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viz-control label {
+            color: var(--neutral-300);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .viz-control input[type="range"] {
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--neutral-600);
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .viz-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            cursor: pointer;
+        }
+
+        .viz-control .value {
+            color: white;
+            font-weight: 600;
+            min-width: 50px;
+        }
+
+        .chart-area {
+            background: var(--neutral-900);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Formula Display */
+        .formula-box {
+            background: var(--neutral-100);
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .formula-box .symbol {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .formula-box .explanation {
+            color: var(--neutral-500);
+            font-size: 12px;
+            margin-top: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Kernel Weight Display */
+        .weight-display {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .weight-item {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--neutral-50);
+            border-radius: 12px;
+            border: 1px solid var(--neutral-200);
+            min-width: 120px;
+        }
+
+        .weight-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .weight-label {
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+
+        /* Employer Node */
+        .employer-node {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        /* Slider group */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral-700);
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--neutral-200);
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .slider-value {
+            min-width: 80px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            text-align: right;
+        }
+
+        /* Two-column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .col-card {
+            background: var(--neutral-50);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        /* Heatmap container */
+        .heatmap-container {
+            margin: 24px 0;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            gap: 2px;
+            margin: 16px 0;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        /* ESS Display */
+        .ess-meter {
+            background: var(--neutral-200);
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .ess-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Algorithm steps */
+        .step-list {
+            counter-reset: step;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 60px;
+            padding-bottom: 32px;
+            border-left: 2px solid var(--neutral-200);
+            margin-left: 20px;
+        }
+
+        .step-item:last-child {
+            border-left: none;
+            padding-bottom: 0;
+        }
+
+        .step-item::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: -21px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
+        }
+
+        .step-content {
+            color: var(--neutral-600);
+            font-size: 14px;
+        }
+
+        /* Money flow table */
+        .money-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .money-table th,
+        .money-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .money-table th {
+            background: var(--neutral-100);
+            font-weight: 600;
+            color: var(--neutral-700);
+            font-size: 13px;
+        }
+
+        .money-table td {
+            font-size: 14px;
+        }
+
+        .money-table .positive {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .money-table .negative {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .money-table .neutral {
+            color: var(--neutral-500);
+        }
+
+        /* Key insight box */
+        .insight-box {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+
+        .insight-box h4 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .insight-box p {
+            color: rgba(255,255,255,0.9);
+            margin: 0;
+        }
+
+        /* Parameter table */
+        .param-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .param-card {
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .param-symbol {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .param-name {
+            font-size: 12px;
+            color: var(--neutral-500);
+            margin: 4px 0;
+        }
+
+        .param-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .compare-grid,
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 40px;
+            }
+
+            section {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .viz-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .weight-display {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .viz-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .viz-control {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .viz-control input[type="range"] {
+                flex: 1;
+            }
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        button:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">Continuous Employer Comparison</div>
+        <ul class="nav-list">
+            <li class="nav-section">The Problem</li>
+            <li class="nav-item"><a class="nav-link active" data-section="problem">Why Discrete Fails</a></li>
+
+            <li class="nav-section">Kernel Functions</li>
+            <li class="nav-item"><a class="nav-link" data-section="kernels">What is a Kernel?</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="time-kernel">Time Kernel</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="salary-kernel">Salary Kernel</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="combined">Combined Weights</a></li>
+
+            <li class="nav-section">Normalization</li>
+            <li class="nav-item"><a class="nav-link" data-section="expected">Expected Efficiency</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="benchmark">Personal Benchmarks</a></li>
+
+            <li class="nav-section">Robustness</li>
+            <li class="nav-item"><a class="nav-link" data-section="ess">Sample Size (ESS)</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="zero-sum">Zero-Sum Batching</a></li>
+
+            <li class="nav-section">Complete Picture</li>
+            <li class="nav-item"><a class="nav-link" data-section="algorithm">Full Algorithm</a></li>
+            <li class="nav-item"><a class="nav-link" data-section="example">Worked Example</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Section 1: The Problem -->
+        <section id="problem">
+            <h1>The Problem with Discrete Comparison</h1>
+            <p class="lead">Any discrete boundary creates an edge to exploit. We need smooth, continuous comparison instead.</p>
+
+            <div class="compare-grid">
+                <div class="compare-card bad">
+                    <h4>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>
+                        </svg>
+                        Fixed Time Windows
+                    </h4>
+                    <p style="margin-bottom: 12px;">Employers rush to close searches at quarter-end to game the comparison set.</p>
+                    <div style="background: white; padding: 12px; border-radius: 6px; font-size: 13px;">
+                        <strong>March 31</strong> competes against different employers than <strong>April 1</strong>
+                    </div>
+                </div>
+
+                <div class="compare-card bad">
+                    <h4>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>
+                        </svg>
+                        Salary Bands
+                    </h4>
+                    <p style="margin-bottom: 12px;">A $149k role vs $151k role land in different "leagues" despite being nearly identical.</p>
+                    <div style="background: white; padding: 12px; border-radius: 6px; font-size: 13px;">
+                        Creates incentive to manipulate salary to land in favorable band
+                    </div>
+                </div>
+            </div>
+
+            <div class="compare-card good" style="margin-top: 24px;">
+                <h4>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    What We Want: Continuous Comparison
+                </h4>
+                <ul style="margin: 12px 0 0 20px; color: var(--neutral-700);">
+                    <li>Smooth, continuous comparison with no cliffs or edges</li>
+                    <li>Similar employers (in time and salary) compared more strongly</li>
+                    <li>Everyone contributes something to everyone's comparison</li>
+                    <li>Total money out = total money in (zero-sum)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 2: What is a Kernel -->
+        <section id="kernels">
+            <h2>What is a Kernel Function?</h2>
+            <p>A kernel measures <strong>similarity</strong> between two things. It outputs a number between 0 and 1:</p>
+
+            <div class="weight-display">
+                <div class="weight-item">
+                    <div class="weight-value" style="color: var(--kernel-high);">1.0</div>
+                    <div class="weight-label">Very similar<br>Strong comparison</div>
+                </div>
+                <div class="weight-item">
+                    <div class="weight-value" style="color: var(--kernel-mid);">0.5</div>
+                    <div class="weight-label">Moderate similarity<br>Medium comparison</div>
+                </div>
+                <div class="weight-item">
+                    <div class="weight-value" style="color: var(--kernel-low);">0.0</div>
+                    <div class="weight-label">Very different<br>Weak/no comparison</div>
+                </div>
+            </div>
+
+            <p>Think of it as asking: "How much should employer A's performance affect how we judge employer B?"</p>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Gaussian Kernel: K(x, y) = exp(-(x - y)<sup>2</sup> / 2σ<sup>2</sup>)</div>
+                    <div class="viz-controls">
+                        <div class="viz-control">
+                            <label>σ (sigma):</label>
+                            <input type="range" id="sigmaSlider" min="0.5" max="3" step="0.1" value="1">
+                            <span class="value" id="sigmaValue">1.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-area">
+                    <svg class="chart-svg" id="gaussianChart" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="col-card">
+                    <h4>Discrete Bands (The Problem)</h4>
+                    <p style="font-size: 14px; color: var(--neutral-600); margin-bottom: 12px;">You're either "in" (weight = 1) or "out" (weight = 0)</p>
+                    <div style="font-family: monospace; font-size: 13px; color: var(--neutral-700);">
+                        $140k vs $145k: weight = 1<br>
+                        $140k vs $155k: weight = 0 <span style="color: var(--danger);">← cliff!</span>
+                    </div>
+                </div>
+                <div class="col-card">
+                    <h4>Kernel Approach (The Solution)</h4>
+                    <p style="font-size: 14px; color: var(--neutral-600); margin-bottom: 12px;">Smooth transition, no cliffs to exploit</p>
+                    <div style="font-family: monospace; font-size: 13px; color: var(--neutral-700);">
+                        $140k vs $145k: weight = 0.97<br>
+                        $140k vs $160k: weight = 0.73<br>
+                        $140k vs $200k: weight = 0.32
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Time Kernel -->
+        <section id="time-kernel">
+            <h2>Time Kernel: When Did Searches Close?</h2>
+            <p>Employers who closed their searches at similar times should be compared more strongly.</p>
+
+            <div class="formula-box">
+                <span class="symbol">K<sub>time</sub>(i, j)</span> = exp(-|t<sub>i</sub> - t<sub>j</sub>| / τ)
+                <div class="explanation">
+                    t<sub>i</sub>, t<sub>j</sub> = close times | τ (tau) = decay constant (e.g., 30 days)
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Time Decay Visualization</div>
+                    <div class="viz-controls">
+                        <div class="viz-control">
+                            <label>τ (days):</label>
+                            <input type="range" id="tauSlider" min="10" max="60" step="5" value="30">
+                            <span class="value" id="tauValue">30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-area">
+                    <svg class="chart-svg" id="timeKernelChart" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <table class="money-table">
+                <thead>
+                    <tr>
+                        <th>Time Difference</th>
+                        <th>Kernel Value (τ=30)</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody id="timeKernelTable">
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>Why Exponential Decay?</h4>
+                <p>The job market changes over time. Comparing your January search to someone's June search is less meaningful than comparing two January searches. Exponential decay naturally captures "recency matters."</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Salary Kernel -->
+        <section id="salary-kernel">
+            <h2>Salary Kernel: Similar Role Values</h2>
+            <p>Employers hiring for similar salary levels should be compared more strongly.</p>
+
+            <div class="formula-box">
+                <span class="symbol">K<sub>salary</sub>(i, j)</span> = exp(-(log(s<sub>i</sub>) - log(s<sub>j</sub>))<sup>2</sup> / σ<sup>2</sup>)
+                <div class="explanation">
+                    s<sub>i</sub>, s<sub>j</sub> = salaries | σ = proximity scale (e.g., 0.5 in log space)
+                </div>
+            </div>
+
+            <div class="compare-grid">
+                <div class="col-card">
+                    <h4>Why Log-Salary?</h4>
+                    <p style="font-size: 14px; color: var(--neutral-600);">Relative differences matter more than absolute ones:</p>
+                    <div style="font-family: monospace; font-size: 13px; margin-top: 12px;">
+                        <div style="margin-bottom: 8px;">$100k → $110k = <strong>10% jump</strong></div>
+                        <div>$200k → $210k = <strong>5% jump</strong></div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--neutral-500); margin-top: 12px;">Both are $10k apart, but the first is "bigger" in relative terms.</p>
+                </div>
+                <div class="col-card">
+                    <h4>Log Difference Comparison</h4>
+                    <div style="font-family: monospace; font-size: 13px;">
+                        <div style="margin-bottom: 8px;">log($110k) - log($100k) = <strong style="color: var(--primary);">0.095</strong></div>
+                        <div>log($210k) - log($200k) = <strong style="color: var(--primary);">0.049</strong></div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--neutral-500); margin-top: 12px;">Log correctly shows the first gap is "bigger".</p>
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Salary Kernel: Compare to $100k Role</div>
+                    <div class="viz-controls">
+                        <div class="viz-control">
+                            <label>σ:</label>
+                            <input type="range" id="salSigmaSlider" min="0.2" max="1.0" step="0.1" value="0.5">
+                            <span class="value" id="salSigmaValue">0.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-area">
+                    <svg class="chart-svg" id="salaryKernelChart" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Combined Weights -->
+        <section id="combined">
+            <h2>Combined Weights: Time × Salary</h2>
+            <p>Two employers are strongly compared only if they're similar in <strong>both</strong> dimensions.</p>
+
+            <div class="formula-box">
+                <span class="symbol">W<sub>ij</sub></span> = K<sub>time</sub>(i, j) × K<sub>salary</sub>(i, j)
+                <div class="explanation">
+                    Combined weight = time similarity × salary similarity
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Weight Heatmap: Employer A ($150k, Jan 15) vs Others</div>
+                </div>
+                <div class="chart-area" style="padding: 30px;">
+                    <svg class="chart-svg" id="heatmapChart" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>Key Insight</h4>
+                <p>Employer A ($150k, Jan 15) is compared most strongly to employers with similar salaries who closed around the same time. Employers far away in either dimension have low weights.</p>
+            </div>
+        </section>
+
+        <!-- Section 6: Expected Efficiency -->
+        <section id="expected">
+            <h2>Normalizing Across Salary Levels</h2>
+            <p>Raw efficiency varies systematically with salary. We need to normalize for fair comparison.</p>
+
+            <div class="compare-grid">
+                <div class="col-card">
+                    <h4>The Problem</h4>
+                    <p style="font-size: 14px; color: var(--neutral-600); margin-bottom: 12px;">Raw efficiency (accepts/applicants) varies by salary:</p>
+                    <div style="font-size: 13px;">
+                        <div style="margin-bottom: 6px;"><strong>Entry-level:</strong> 0.01-0.03 (many applicants)</div>
+                        <div style="margin-bottom: 6px;"><strong>Senior:</strong> 0.05-0.10</div>
+                        <div><strong>Executive:</strong> 0.10-0.20 (few applicants)</div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--danger); margin-top: 12px;">Every executive would "beat" every entry-level!</p>
+                </div>
+                <div class="col-card">
+                    <h4>The Solution: E(s)</h4>
+                    <p style="font-size: 14px; color: var(--neutral-600); margin-bottom: 12px;">Learn what's "normal" at each salary level:</p>
+                    <div class="formula-box" style="margin: 0;">
+                        <span class="symbol">n</span> = actual_efficiency / E(s)
+                        <div class="explanation">Normalized = actual / expected for that salary</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Expected Efficiency E(s) by Salary</div>
+                </div>
+                <div class="chart-area">
+                    <svg class="chart-svg" id="expectedChart" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <table class="money-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Salary</th>
+                        <th>Applicants</th>
+                        <th>Accepts</th>
+                        <th>Raw Eff</th>
+                        <th>E(s)</th>
+                        <th>Normalized</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>$60k</td>
+                        <td>100</td>
+                        <td>2</td>
+                        <td>0.020</td>
+                        <td>0.025</td>
+                        <td class="negative">0.80</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>$150k</td>
+                        <td>40</td>
+                        <td>2</td>
+                        <td>0.050</td>
+                        <td>0.040</td>
+                        <td class="positive">1.25</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>$250k</td>
+                        <td>20</td>
+                        <td>2</td>
+                        <td>0.100</td>
+                        <td>0.080</td>
+                        <td class="positive">1.25</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="text-center" style="color: var(--neutral-500); font-size: 14px;">
+                Raw efficiency suggests C is 5x better than A. After normalization, B and C are equal (both 25% above their salary's average).
+            </p>
+        </section>
+
+        <!-- Section 7: Personalized Benchmarks -->
+        <section id="benchmark">
+            <h2>Personalized Benchmarks</h2>
+            <p>Each employer gets a personalized benchmark—a weighted average of similar employers' performances.</p>
+
+            <div class="formula-box">
+                <span class="symbol">benchmark<sub>i</sub></span> = Σ<sub>j</sub>(W<sub>ij</sub> × n<sub>j</sub>) / Σ<sub>j</sub>(W<sub>ij</sub>)
+                <div class="explanation">
+                    Your benchmark = weighted average of others' normalized efficiency, where similar employers count more
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">How Weights Affect Your Benchmark</div>
+                </div>
+                <div class="chart-area" style="padding: 24px;">
+                    <svg class="chart-svg" id="benchmarkChart" viewBox="0 0 600 320" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <span class="symbol">r<sub>i</sub></span> = n<sub>i</sub> / benchmark<sub>i</sub>
+                <div class="explanation">
+                    r > 1.0: Beat benchmark | r = 1.0: Matched | r < 1.0: Underperformed
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>Contextual Comparison</h4>
+                <p>If most similar employers did well, your benchmark is high—you need to do well to beat it. If they did poorly, your benchmark is low—easier to beat. You're judged against your relevant peers.</p>
+            </div>
+        </section>
+
+        <!-- Section 8: Effective Sample Size -->
+        <section id="ess">
+            <h2>Handling Sparse Data: ESS</h2>
+            <p>What if you're an early employer or posting a unique salary? We need to measure comparison confidence.</p>
+
+            <div class="formula-box">
+                <span class="symbol">ESS<sub>i</sub></span> = (Σ<sub>j</sub> W<sub>ij</sub>)<sup>2</sup> / Σ<sub>j</sub>(W<sub>ij</sub>)<sup>2</sup>
+                <div class="explanation">
+                    Effective Sample Size: "How many real comparisons do I have?"
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">ESS and Confidence</div>
+                    <div class="viz-controls">
+                        <div class="viz-control">
+                            <label>ESS:</label>
+                            <input type="range" id="essSlider" min="1" max="50" step="1" value="25">
+                            <span class="value" id="essValue">25</span>
+                        </div>
+                        <div class="viz-control">
+                            <label>Raw r:</label>
+                            <input type="range" id="rawRSlider" min="0.5" max="1.5" step="0.05" value="1.4">
+                            <span class="value" id="rawRValue">1.40</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-area" style="padding: 24px;">
+                    <div style="color: var(--neutral-300); margin-bottom: 16px;">
+                        <strong>Confidence</strong> = min(1, ESS / 10)
+                    </div>
+                    <div class="ess-meter">
+                        <div class="ess-fill" id="essFill" style="width: 100%; background: var(--success);">100%</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;">
+                        <div style="text-align: center;">
+                            <div style="color: var(--neutral-400); font-size: 12px;">Raw Performance</div>
+                            <div style="color: white; font-size: 28px; font-weight: 700;" id="essRawR">1.40</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: var(--neutral-400); font-size: 12px;">Shrinkage Formula</div>
+                            <div style="color: var(--neutral-300); font-size: 14px; margin-top: 8px;" id="essFormula">1.0 × 1.40 + 0.0 × 1.0</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: var(--neutral-400); font-size: 12px;">Adjusted Performance</div>
+                            <div style="color: var(--primary-light); font-size: 28px; font-weight: 700;" id="essAdjustedR">1.40</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="money-table">
+                <thead>
+                    <tr>
+                        <th>ESS</th>
+                        <th>Confidence</th>
+                        <th>Raw r</th>
+                        <th>Adjusted r</th>
+                        <th>Effect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50</td>
+                        <td>1.00</td>
+                        <td>1.40</td>
+                        <td class="positive">1.40</td>
+                        <td class="neutral">Full trust</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>1.00</td>
+                        <td>1.40</td>
+                        <td class="positive">1.40</td>
+                        <td class="neutral">Threshold met</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>0.50</td>
+                        <td>1.40</td>
+                        <td>1.20</td>
+                        <td>Shrunk toward 1.0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>0.20</td>
+                        <td>1.40</td>
+                        <td>1.08</td>
+                        <td>Heavily shrunk</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="color: var(--neutral-500); font-size: 14px; text-align: center;">
+                With sparse data, we give benefit of the doubt—not heavily rewarded or penalized until we have enough comparisons.
+            </p>
+        </section>
+
+        <!-- Section 9: Zero-Sum Batching -->
+        <section id="zero-sum">
+            <h2>Zero-Sum Normalization</h2>
+            <p>Total money distributed must equal total money staked. We achieve this through batch normalization.</p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-title">Calculate Raw Returns</div>
+                    <div class="step-content">For each employer: RawReturn = Stake × adjusted_r</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Sum and Compare</div>
+                    <div class="step-content">Total Stakes vs Total Raw Returns (usually don't match)</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Calculate Scale Factor</div>
+                    <div class="step-content">k = Total Stakes / Total Raw Returns</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Apply Scaling</div>
+                    <div class="step-content">FinalReturn = RawReturn × k (now sums exactly to stakes)</div>
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-header">
+                    <div class="viz-title">Batch Normalization Example</div>
+                </div>
+                <div class="chart-area" style="padding: 24px;">
+                    <svg class="chart-svg" id="zeroSumChart" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>Why Batching?</h4>
+                <p>Money needs to actually transfer. Weekly batching gives us predictable payouts, clean accounting, and manageable sizes—while still being much smoother than quarterly windows.</p>
+            </div>
+        </section>
+
+        <!-- Section 10: Full Algorithm -->
+        <section id="algorithm">
+            <h2>The Complete Algorithm</h2>
+
+            <div class="param-grid">
+                <div class="param-card">
+                    <div class="param-symbol">τ</div>
+                    <div class="param-name">Time Decay</div>
+                    <div class="param-value">30 days</div>
+                </div>
+                <div class="param-card">
+                    <div class="param-symbol">σ</div>
+                    <div class="param-name">Salary Scale</div>
+                    <div class="param-value">0.5</div>
+                </div>
+                <div class="param-card">
+                    <div class="param-symbol">ESS</div>
+                    <div class="param-name">Threshold</div>
+                    <div class="param-value">10</div>
+                </div>
+                <div class="param-card">
+                    <div class="param-symbol">Lock</div>
+                    <div class="param-name">Period</div>
+                    <div class="param-value">90 days</div>
+                </div>
+                <div class="param-card">
+                    <div class="param-symbol">Batch</div>
+                    <div class="param-name">Frequency</div>
+                    <div class="param-value">Weekly</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">When Search Closes</h3>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-title">Record Data</div>
+                    <div class="step-content">Salary, close time, applicants, acceptances, stake</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Calculate Raw Efficiency</div>
+                    <div class="step-content">e = acceptances / applicants</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Normalize by Salary</div>
+                    <div class="step-content">n = e / E(salary)</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Start Lock Period</div>
+                    <div class="step-content">Store and wait 90 days before payout</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">Weekly Payout Batch</h3>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-title">Calculate Weights</div>
+                    <div class="step-content">W<sub>ij</sub> = K<sub>time</sub> × K<sub>salary</sub> to all historical employers</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Personalized Benchmark</div>
+                    <div class="step-content">benchmark = Σ(W × n) / Σ(W)</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Relative Performance</div>
+                    <div class="step-content">r = n / benchmark</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">ESS and Shrinkage</div>
+                    <div class="step-content">adjusted_r = confidence × r + (1 - confidence) × 1.0</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Zero-Sum Normalize</div>
+                    <div class="step-content">Scale all returns so total out = total in</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-title">Distribute Funds</div>
+                    <div class="step-content">Winners receive from losers. Net sum = 0.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 11: Worked Example -->
+        <section id="example">
+            <h2>Worked Example</h2>
+            <p>Three employers complete their lock period in the same week:</p>
+
+            <table class="money-table">
+                <thead>
+                    <tr>
+                        <th>Employer</th>
+                        <th>Salary</th>
+                        <th>Stake</th>
+                        <th>Close Date</th>
+                        <th>Applicants</th>
+                        <th>Accepts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="employer-node" style="background: #ef4444;">A</span></td>
+                        <td>$100k</td>
+                        <td>$2,500</td>
+                        <td>Jan 15</td>
+                        <td>50</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td><span class="employer-node" style="background: #22c55e;">B</span></td>
+                        <td>$150k</td>
+                        <td>$3,750</td>
+                        <td>Jan 10</td>
+                        <td>30</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td><span class="employer-node" style="background: #f59e0b;">C</span></td>
+                        <td>$200k</td>
+                        <td>$5,000</td>
+                        <td>Jan 20</td>
+                        <td>80</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 32px;">Step-by-Step Calculation</h3>
+
+            <div class="two-col">
+                <div class="col-card">
+                    <h4>1. Raw Efficiency</h4>
+                    <div style="font-family: monospace; font-size: 14px;">
+                        e<sub>A</sub> = 2/50 = 0.040<br>
+                        e<sub>B</sub> = 2/30 = 0.067<br>
+                        e<sub>C</sub> = 2/80 = 0.025
+                    </div>
+                </div>
+                <div class="col-card">
+                    <h4>2. Expected Efficiency</h4>
+                    <div style="font-family: monospace; font-size: 14px;">
+                        E($100k) = 0.050<br>
+                        E($150k) = 0.040<br>
+                        E($200k) = 0.030
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-card" style="margin-top: 16px;">
+                <h4>3. Normalized Efficiency</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; margin-top: 12px;">
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--danger);">0.80</div>
+                        <div style="font-size: 12px; color: var(--neutral-500);">A: Below average</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--success);">1.67</div>
+                        <div style="font-size: 12px; color: var(--neutral-500);">B: Well above</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--danger);">0.83</div>
+                        <div style="font-size: 12px; color: var(--neutral-500);">C: Below average</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="viz-container" style="margin-top: 24px;">
+                <div class="viz-header">
+                    <div class="viz-title">4-9. From Weights to Final Returns</div>
+                </div>
+                <div class="chart-area" style="padding: 24px;">
+                    <svg class="chart-svg" id="exampleChart" viewBox="0 0 600 350" preserveAspectRatio="xMidYMid meet">
+                    </svg>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">Final Outcomes</h3>
+
+            <table class="money-table">
+                <thead>
+                    <tr>
+                        <th>Employer</th>
+                        <th>Staked</th>
+                        <th>Receives</th>
+                        <th>Net</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="employer-node" style="background: #ef4444; width: 28px; height: 28px; font-size: 12px;">A</span></td>
+                        <td>$2,500</td>
+                        <td>$1,744</td>
+                        <td class="negative">-$756</td>
+                        <td>Underperformed slightly (80% of expected)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="employer-node" style="background: #22c55e; width: 28px; height: 28px; font-size: 12px;">B</span></td>
+                        <td>$3,750</td>
+                        <td>$5,921</td>
+                        <td class="positive">+$2,171</td>
+                        <td>Best job description, most efficient</td>
+                    </tr>
+                    <tr>
+                        <td><span class="employer-node" style="background: #f59e0b; width: 28px; height: 28px; font-size: 12px;">C</span></td>
+                        <td>$5,000</td>
+                        <td>$3,580</td>
+                        <td class="negative">-$1,420</td>
+                        <td>80 applicants for 2 hires is poor for $200k</td>
+                    </tr>
+                    <tr style="background: var(--neutral-100); font-weight: 600;">
+                        <td>Total</td>
+                        <td>$11,250</td>
+                        <td>$11,245</td>
+                        <td class="neutral">≈ $0</td>
+                        <td>Zero-sum maintained</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box" style="margin-top: 32px;">
+                <h4>The Core Principle</h4>
+                <p style="font-size: 18px;">Replace discrete boundaries with smooth, continuous functions. Instead of asking "which box are you in?", ask "how similar are you to everyone else?"</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        'use strict';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            // Mobile menu toggle
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Close sidebar when clicking on a link (mobile)
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768 && sidebar) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+            });
+
+            // Navigation
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    const targetSection = document.getElementById(sectionId);
+
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                        navLinks.forEach(function(l) { l.classList.remove('active'); });
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Scroll spy
+            function updateActiveNav() {
+                try {
+                    const scrollPos = window.scrollY + 100;
+                    sections.forEach(function(section) {
+                        const top = section.offsetTop;
+                        const height = section.offsetHeight;
+                        const id = section.getAttribute('id');
+
+                        if (scrollPos >= top && scrollPos < top + height) {
+                            navLinks.forEach(function(link) {
+                                link.classList.remove('active');
+                                if (link.getAttribute('data-section') === id) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                } catch (err) {}
+            }
+
+            window.addEventListener('scroll', updateActiveNav);
+
+            // Helper functions
+            function gaussianKernel(x, y, sigma) {
+                const diff = x - y;
+                return Math.exp(-(diff * diff) / (2 * sigma * sigma));
+            }
+
+            function exponentialDecay(diff, tau) {
+                return Math.exp(-Math.abs(diff) / tau);
+            }
+
+            function getColor(value) {
+                // value 0-1, returns color from red to green
+                const r = Math.round(255 * (1 - value));
+                const g = Math.round(255 * value);
+                return 'rgb(' + r + ',' + g + ',50)';
+            }
+
+            // Gaussian Kernel Chart
+            function drawGaussianChart() {
+                try {
+                    const chart = document.getElementById('gaussianChart');
+                    const sigmaSlider = document.getElementById('sigmaSlider');
+                    const sigmaValue = document.getElementById('sigmaValue');
+                    if (!chart || !sigmaSlider) return;
+
+                    const sigma = parseFloat(sigmaSlider.value) || 1;
+                    if (sigmaValue) sigmaValue.textContent = sigma.toFixed(1);
+
+                    const width = 600;
+                    const height = 280;
+                    const padL = 50;
+                    const padR = 30;
+                    const padT = 30;
+                    const padB = 50;
+                    const chartW = width - padL - padR;
+                    const chartH = height - padT - padB;
+
+                    let svg = '';
+
+                    // Background
+                    svg += '<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="#1a1a1a" rx="4"/>';
+
+                    // Grid lines
+                    for (let i = 0; i <= 4; i++) {
+                        const y = padT + (chartH * i / 4);
+                        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (width - padR) + '" y2="' + y + '" stroke="#333" stroke-width="1"/>';
+                        const label = (1 - i/4).toFixed(2);
+                        svg += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="11">' + label + '</text>';
+                    }
+
+                    // X-axis labels
+                    for (let i = -3; i <= 3; i++) {
+                        const x = padL + chartW/2 + (i * chartW/6);
+                        svg += '<text x="' + x + '" y="' + (height - 15) + '" text-anchor="middle" fill="#888" font-size="11">' + i + 'σ</text>';
+                    }
+
+                    // Draw curve
+                    const points = [];
+                    for (let i = 0; i <= 100; i++) {
+                        const xVal = -3 + (i / 100) * 6; // -3σ to 3σ
+                        const yVal = gaussianKernel(xVal * sigma, 0, sigma);
+                        const x = padL + (i / 100) * chartW;
+                        const y = padT + chartH * (1 - yVal);
+                        points.push(x + ',' + y);
+                    }
+
+                    // Fill under curve
+                    svg += '<path d="M' + padL + ',' + (padT + chartH) + ' L' + points.join(' L') + ' L' + (padL + chartW) + ',' + (padT + chartH) + ' Z" fill="rgba(34, 211, 238, 0.2)"/>';
+
+                    // Curve line
+                    svg += '<path d="M' + points.join(' L') + '" fill="none" stroke="#22d3ee" stroke-width="3"/>';
+
+                    // Center marker
+                    svg += '<circle cx="' + (padL + chartW/2) + '" cy="' + padT + '" r="6" fill="#22d3ee"/>';
+                    svg += '<text x="' + (padL + chartW/2) + '" y="' + (padT - 10) + '" text-anchor="middle" fill="white" font-size="12" font-weight="600">K = 1.0</text>';
+
+                    // Sigma markers
+                    const sigmaX = padL + chartW/2 + chartW/6;
+                    const sigmaY = padT + chartH * (1 - Math.exp(-0.5));
+                    svg += '<circle cx="' + sigmaX + '" cy="' + sigmaY + '" r="4" fill="#eab308"/>';
+                    svg += '<text x="' + (sigmaX + 10) + '" y="' + (sigmaY - 5) + '" fill="#eab308" font-size="11">K ≈ 0.61</text>';
+
+                    // Labels
+                    svg += '<text x="' + (width/2) + '" y="' + (height - 2) + '" text-anchor="middle" fill="#666" font-size="12">Distance from center</text>';
+                    svg += '<text x="15" y="' + (height/2) + '" text-anchor="middle" fill="#666" font-size="12" transform="rotate(-90,15,' + (height/2) + ')">Similarity</text>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            const sigmaSlider = document.getElementById('sigmaSlider');
+            if (sigmaSlider) {
+                sigmaSlider.addEventListener('input', drawGaussianChart);
+                sigmaSlider.addEventListener('change', drawGaussianChart);
+            }
+            drawGaussianChart();
+
+            // Time Kernel Chart
+            function drawTimeKernelChart() {
+                try {
+                    const chart = document.getElementById('timeKernelChart');
+                    const tauSlider = document.getElementById('tauSlider');
+                    const tauValue = document.getElementById('tauValue');
+                    const tableBody = document.getElementById('timeKernelTable');
+                    if (!chart || !tauSlider) return;
+
+                    const tau = parseInt(tauSlider.value, 10) || 30;
+                    if (tauValue) tauValue.textContent = tau;
+
+                    const width = 600;
+                    const height = 280;
+                    const padL = 50;
+                    const padR = 30;
+                    const padT = 30;
+                    const padB = 50;
+                    const chartW = width - padL - padR;
+                    const chartH = height - padT - padB;
+
+                    let svg = '';
+
+                    // Background
+                    svg += '<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="#1a1a1a" rx="4"/>';
+
+                    // Grid
+                    for (let i = 0; i <= 4; i++) {
+                        const y = padT + (chartH * i / 4);
+                        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (width - padR) + '" y2="' + y + '" stroke="#333" stroke-width="1"/>';
+                        svg += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="11">' + (1 - i/4).toFixed(1) + '</text>';
+                    }
+
+                    // X labels (days)
+                    const maxDays = 90;
+                    for (let d = 0; d <= maxDays; d += 30) {
+                        const x = padL + (d / maxDays) * chartW;
+                        svg += '<text x="' + x + '" y="' + (height - 15) + '" text-anchor="middle" fill="#888" font-size="11">' + d + 'd</text>';
+                    }
+
+                    // Draw decay curve
+                    const points = [];
+                    for (let d = 0; d <= maxDays; d++) {
+                        const k = exponentialDecay(d, tau);
+                        const x = padL + (d / maxDays) * chartW;
+                        const y = padT + chartH * (1 - k);
+                        points.push(x + ',' + y);
+                    }
+
+                    svg += '<path d="M' + padL + ',' + (padT + chartH) + ' L' + points.join(' L') + ' L' + (padL + chartW) + ',' + (padT + chartH) + ' Z" fill="rgba(34, 211, 238, 0.2)"/>';
+                    svg += '<path d="M' + points.join(' L') + '" fill="none" stroke="#22d3ee" stroke-width="3"/>';
+
+                    // Tau marker
+                    const tauK = exponentialDecay(tau, tau);
+                    const tauX = padL + (tau / maxDays) * chartW;
+                    const tauY = padT + chartH * (1 - tauK);
+                    svg += '<line x1="' + tauX + '" y1="' + (padT + chartH) + '" x2="' + tauX + '" y2="' + tauY + '" stroke="#eab308" stroke-width="2" stroke-dasharray="4,4"/>';
+                    svg += '<circle cx="' + tauX + '" cy="' + tauY + '" r="5" fill="#eab308"/>';
+                    svg += '<text x="' + (tauX + 8) + '" y="' + (tauY - 8) + '" fill="#eab308" font-size="11">τ = ' + tau + ' days</text>';
+
+                    svg += '<text x="' + (width/2) + '" y="' + (height - 2) + '" text-anchor="middle" fill="#666" font-size="12">Days apart</text>';
+
+                    chart.innerHTML = svg;
+
+                    // Update table
+                    if (tableBody) {
+                        const rows = [
+                            { days: 0, interp: 'Identical timing' },
+                            { days: 7, interp: 'Very recent' },
+                            { days: Math.round(tau), interp: 'At τ decay' },
+                            { days: Math.round(tau * 2), interp: 'Significant decay' },
+                            { days: Math.round(tau * 3), interp: 'Weak connection' }
+                        ];
+
+                        let tableHtml = '';
+                        rows.forEach(function(row) {
+                            const k = exponentialDecay(row.days, tau);
+                            tableHtml += '<tr><td>' + row.days + ' days</td><td>' + k.toFixed(2) + '</td><td>' + row.interp + '</td></tr>';
+                        });
+                        tableBody.innerHTML = tableHtml;
+                    }
+                } catch (err) {}
+            }
+
+            const tauSlider = document.getElementById('tauSlider');
+            if (tauSlider) {
+                tauSlider.addEventListener('input', drawTimeKernelChart);
+                tauSlider.addEventListener('change', drawTimeKernelChart);
+            }
+            drawTimeKernelChart();
+
+            // Salary Kernel Chart
+            function drawSalaryKernelChart() {
+                try {
+                    const chart = document.getElementById('salaryKernelChart');
+                    const sigmaSlider = document.getElementById('salSigmaSlider');
+                    const sigmaValue = document.getElementById('salSigmaValue');
+                    if (!chart || !sigmaSlider) return;
+
+                    const sigma = parseFloat(sigmaSlider.value) || 0.5;
+                    if (sigmaValue) sigmaValue.textContent = sigma.toFixed(1);
+
+                    const baseSalary = 100000;
+                    const width = 600;
+                    const height = 280;
+                    const padL = 60;
+                    const padR = 30;
+                    const padT = 30;
+                    const padB = 50;
+                    const chartW = width - padL - padR;
+                    const chartH = height - padT - padB;
+
+                    let svg = '';
+
+                    // Background
+                    svg += '<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="#1a1a1a" rx="4"/>';
+
+                    // Grid
+                    for (let i = 0; i <= 4; i++) {
+                        const y = padT + (chartH * i / 4);
+                        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (width - padR) + '" y2="' + y + '" stroke="#333" stroke-width="1"/>';
+                        svg += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="11">' + (1 - i/4).toFixed(1) + '</text>';
+                    }
+
+                    // X labels (salaries)
+                    const salaries = [50, 100, 150, 200, 250, 300];
+                    salaries.forEach(function(s) {
+                        const logDiff = Math.log(s * 1000) - Math.log(baseSalary);
+                        const x = padL + ((logDiff + 0.7) / 1.8) * chartW;
+                        if (x > padL && x < width - padR) {
+                            svg += '<text x="' + x + '" y="' + (height - 15) + '" text-anchor="middle" fill="#888" font-size="11">$' + s + 'k</text>';
+                        }
+                    });
+
+                    // Draw curve
+                    const points = [];
+                    for (let i = 0; i <= 100; i++) {
+                        const logDiff = -0.7 + (i / 100) * 1.8;
+                        const salaryK = Math.exp(-(logDiff * logDiff) / (sigma * sigma));
+                        const x = padL + (i / 100) * chartW;
+                        const y = padT + chartH * (1 - salaryK);
+                        points.push(x + ',' + y);
+                    }
+
+                    svg += '<path d="M' + padL + ',' + (padT + chartH) + ' L' + points.join(' L') + ' L' + (padL + chartW) + ',' + (padT + chartH) + ' Z" fill="rgba(139, 92, 246, 0.2)"/>';
+                    svg += '<path d="M' + points.join(' L') + '" fill="none" stroke="#8b5cf6" stroke-width="3"/>';
+
+                    // Base salary marker
+                    const baseX = padL + (0.7 / 1.8) * chartW;
+                    svg += '<circle cx="' + baseX + '" cy="' + padT + '" r="6" fill="#8b5cf6"/>';
+                    svg += '<text x="' + baseX + '" y="' + (padT - 10) + '" text-anchor="middle" fill="white" font-size="12" font-weight="600">$100k (base)</text>';
+
+                    // Example markers
+                    const examples = [
+                        { salary: 150, label: '$150k' },
+                        { salary: 200, label: '$200k' }
+                    ];
+
+                    examples.forEach(function(ex) {
+                        const logDiff = Math.log(ex.salary * 1000) - Math.log(baseSalary);
+                        const k = Math.exp(-(logDiff * logDiff) / (sigma * sigma));
+                        const x = padL + ((logDiff + 0.7) / 1.8) * chartW;
+                        const y = padT + chartH * (1 - k);
+                        svg += '<circle cx="' + x + '" cy="' + y + '" r="4" fill="#eab308"/>';
+                        svg += '<text x="' + (x + 5) + '" y="' + (y - 8) + '" fill="#eab308" font-size="10">' + k.toFixed(2) + '</text>';
+                    });
+
+                    svg += '<text x="' + (width/2) + '" y="' + (height - 2) + '" text-anchor="middle" fill="#666" font-size="12">Comparison Salary</text>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            const salSigmaSlider = document.getElementById('salSigmaSlider');
+            if (salSigmaSlider) {
+                salSigmaSlider.addEventListener('input', drawSalaryKernelChart);
+                salSigmaSlider.addEventListener('change', drawSalaryKernelChart);
+            }
+            drawSalaryKernelChart();
+
+            // Heatmap Chart
+            function drawHeatmapChart() {
+                try {
+                    const chart = document.getElementById('heatmapChart');
+                    if (!chart) return;
+
+                    const width = 600;
+                    const height = 400;
+                    const padL = 80;
+                    const padR = 100;
+                    const padT = 60;
+                    const padB = 60;
+
+                    // Reference employer: $150k, Jan 15
+                    const refSalary = 150000;
+                    const refTime = 15; // Jan 15
+
+                    const tau = 30;
+                    const sigma = 0.5;
+
+                    const salaries = [80, 100, 120, 150, 180, 200, 250];
+                    const times = [1, 8, 15, 22, 29, 36, 43]; // Days in Jan/Feb
+
+                    const cellW = (width - padL - padR) / times.length;
+                    const cellH = (height - padT - padB) / salaries.length;
+
+                    let svg = '';
+
+                    // Title
+                    svg += '<text x="' + (width/2) + '" y="25" text-anchor="middle" fill="#333" font-size="14" font-weight="600">Weight from Employer A ($150k, Jan 15) perspective</text>';
+
+                    // Salary labels
+                    salaries.forEach(function(s, i) {
+                        const y = padT + i * cellH + cellH/2;
+                        svg += '<text x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end" fill="#666" font-size="12">$' + s + 'k</text>';
+                    });
+
+                    // Time labels
+                    times.forEach(function(t, i) {
+                        const x = padL + i * cellW + cellW/2;
+                        const label = t <= 31 ? 'Jan ' + t : 'Feb ' + (t - 31);
+                        svg += '<text x="' + x + '" y="' + (height - padB + 20) + '" text-anchor="middle" fill="#666" font-size="11">' + label + '</text>';
+                    });
+
+                    // Draw cells
+                    salaries.forEach(function(s, si) {
+                        times.forEach(function(t, ti) {
+                            const timeWeight = exponentialDecay(Math.abs(t - refTime), tau);
+                            const logDiff = Math.log(s * 1000) - Math.log(refSalary);
+                            const salaryWeight = Math.exp(-(logDiff * logDiff) / (sigma * sigma));
+                            const combined = timeWeight * salaryWeight;
+
+                            const x = padL + ti * cellW;
+                            const y = padT + si * cellH;
+
+                            const color = getColor(combined);
+                            svg += '<rect x="' + x + '" y="' + y + '" width="' + (cellW - 2) + '" height="' + (cellH - 2) + '" fill="' + color + '" rx="4"/>';
+
+                            // Show value
+                            const textColor = combined > 0.5 ? '#000' : '#fff';
+                            svg += '<text x="' + (x + cellW/2 - 1) + '" y="' + (y + cellH/2 + 4) + '" text-anchor="middle" fill="' + textColor + '" font-size="11" font-weight="600">' + combined.toFixed(2) + '</text>';
+
+                            // Highlight reference cell
+                            if (s === 150 && t === 15) {
+                                svg += '<rect x="' + (x - 2) + '" y="' + (y - 2) + '" width="' + (cellW + 2) + '" height="' + (cellH + 2) + '" fill="none" stroke="#0891b2" stroke-width="3" rx="6"/>';
+                            }
+                        });
+                    });
+
+                    // Legend
+                    const legendX = width - padR + 20;
+                    const legendY = padT + 20;
+                    svg += '<text x="' + legendX + '" y="' + legendY + '" fill="#666" font-size="11" font-weight="600">Weight</text>';
+
+                    for (let i = 0; i <= 4; i++) {
+                        const val = 1 - i * 0.25;
+                        const y = legendY + 20 + i * 25;
+                        const color = getColor(val);
+                        svg += '<rect x="' + legendX + '" y="' + y + '" width="20" height="20" fill="' + color + '" rx="3"/>';
+                        svg += '<text x="' + (legendX + 28) + '" y="' + (y + 14) + '" fill="#666" font-size="11">' + val.toFixed(2) + '</text>';
+                    }
+
+                    // Axis labels
+                    svg += '<text x="' + (width/2) + '" y="' + (height - 10) + '" text-anchor="middle" fill="#666" font-size="12">Close Date</text>';
+                    svg += '<text x="20" y="' + (height/2) + '" text-anchor="middle" fill="#666" font-size="12" transform="rotate(-90,20,' + (height/2) + ')">Salary</text>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            drawHeatmapChart();
+
+            // Expected Efficiency Chart
+            function drawExpectedChart() {
+                try {
+                    const chart = document.getElementById('expectedChart');
+                    if (!chart) return;
+
+                    const width = 600;
+                    const height = 280;
+                    const padL = 60;
+                    const padR = 30;
+                    const padT = 30;
+                    const padB = 50;
+                    const chartW = width - padL - padR;
+                    const chartH = height - padT - padB;
+
+                    let svg = '';
+
+                    // Background
+                    svg += '<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="#1a1a1a" rx="4"/>';
+
+                    // Grid
+                    const effVals = [0.10, 0.08, 0.06, 0.04, 0.02, 0];
+                    effVals.forEach(function(e, i) {
+                        const y = padT + (i / (effVals.length - 1)) * chartH;
+                        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (width - padR) + '" y2="' + y + '" stroke="#333" stroke-width="1"/>';
+                        svg += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="10">' + (e * 100).toFixed(0) + '%</text>';
+                    });
+
+                    // X labels
+                    const salaries = [50, 100, 150, 200, 250, 300, 350, 400];
+                    salaries.forEach(function(s) {
+                        const x = padL + ((s - 50) / 350) * chartW;
+                        svg += '<text x="' + x + '" y="' + (height - 15) + '" text-anchor="middle" fill="#888" font-size="11">$' + s + 'k</text>';
+                    });
+
+                    // E(s) = 0.1 / sqrt(s / 100000)
+                    const points = [];
+                    for (let s = 50000; s <= 400000; s += 5000) {
+                        const e = 0.1 / Math.sqrt(s / 100000);
+                        const x = padL + ((s/1000 - 50) / 350) * chartW;
+                        const y = padT + (1 - e / 0.10) * chartH;
+                        points.push(x + ',' + Math.max(padT, Math.min(padT + chartH, y)));
+                    }
+
+                    svg += '<path d="M' + points.join(' L') + '" fill="none" stroke="#22c55e" stroke-width="3"/>';
+
+                    // Example points
+                    const examples = [
+                        { salary: 60, eff: 0.025, label: 'A: $60k' },
+                        { salary: 150, eff: 0.040, label: 'B: $150k' },
+                        { salary: 250, eff: 0.080, label: 'C: $250k' }
+                    ];
+
+                    examples.forEach(function(ex) {
+                        const x = padL + ((ex.salary - 50) / 350) * chartW;
+                        const y = padT + (1 - ex.eff / 0.10) * chartH;
+                        svg += '<circle cx="' + x + '" cy="' + y + '" r="6" fill="#8b5cf6"/>';
+                        svg += '<text x="' + (x + 10) + '" y="' + (y + 4) + '" fill="#8b5cf6" font-size="11">' + ex.label + '</text>';
+                    });
+
+                    svg += '<text x="' + (width/2) + '" y="' + (height - 2) + '" text-anchor="middle" fill="#666" font-size="12">Salary</text>';
+                    svg += '<text x="15" y="' + (height/2) + '" text-anchor="middle" fill="#666" font-size="12" transform="rotate(-90,15,' + (height/2) + ')">E(s)</text>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            drawExpectedChart();
+
+            // Benchmark Chart
+            function drawBenchmarkChart() {
+                try {
+                    const chart = document.getElementById('benchmarkChart');
+                    if (!chart) return;
+
+                    const width = 600;
+                    const height = 320;
+
+                    let svg = '';
+
+                    // Central employer
+                    svg += '<circle cx="300" cy="160" r="40" fill="#0891b2"/>';
+                    svg += '<text x="300" y="165" text-anchor="middle" fill="white" font-weight="700" font-size="16">You</text>';
+
+                    // Comparison employers with weights
+                    const others = [
+                        { x: 100, y: 80, weight: 0.85, perf: 1.2, label: 'Similar' },
+                        { x: 500, y: 80, weight: 0.72, perf: 0.9, label: 'Similar' },
+                        { x: 150, y: 260, weight: 0.15, perf: 1.5, label: 'Different' },
+                        { x: 450, y: 260, weight: 0.05, perf: 0.7, label: 'Very diff' }
+                    ];
+
+                    others.forEach(function(o) {
+                        const size = 20 + o.weight * 25;
+                        const color = o.weight > 0.5 ? '#22c55e' : (o.weight > 0.2 ? '#eab308' : '#ef4444');
+
+                        // Connection line
+                        svg += '<line x1="300" y1="160" x2="' + o.x + '" y2="' + o.y + '" stroke="' + color + '" stroke-width="' + (1 + o.weight * 4) + '" opacity="0.5"/>';
+
+                        // Node
+                        svg += '<circle cx="' + o.x + '" cy="' + o.y + '" r="' + size + '" fill="' + color + '"/>';
+                        svg += '<text x="' + o.x + '" y="' + (o.y + 4) + '" text-anchor="middle" fill="white" font-size="11" font-weight="600">' + o.perf.toFixed(1) + '</text>';
+
+                        // Weight label
+                        const midX = (300 + o.x) / 2;
+                        const midY = (160 + o.y) / 2;
+                        svg += '<text x="' + midX + '" y="' + midY + '" text-anchor="middle" fill="' + color + '" font-size="10" font-weight="600">w=' + o.weight.toFixed(2) + '</text>';
+
+                        // Label
+                        svg += '<text x="' + o.x + '" y="' + (o.y + size + 15) + '" text-anchor="middle" fill="#666" font-size="10">' + o.label + '</text>';
+                    });
+
+                    // Benchmark calculation
+                    svg += '<text x="300" y="300" text-anchor="middle" fill="#333" font-size="12">Your benchmark = weighted average of their performances</text>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            drawBenchmarkChart();
+
+            // ESS Interactive
+            function updateESS() {
+                try {
+                    const essSlider = document.getElementById('essSlider');
+                    const rawRSlider = document.getElementById('rawRSlider');
+                    const essValue = document.getElementById('essValue');
+                    const rawRValue = document.getElementById('rawRValue');
+                    const essFill = document.getElementById('essFill');
+                    const essRawR = document.getElementById('essRawR');
+                    const essFormula = document.getElementById('essFormula');
+                    const essAdjustedR = document.getElementById('essAdjustedR');
+
+                    if (!essSlider || !rawRSlider) return;
+
+                    const ess = parseInt(essSlider.value, 10) || 25;
+                    const rawR = parseFloat(rawRSlider.value) || 1.4;
+
+                    if (essValue) essValue.textContent = ess;
+                    if (rawRValue) rawRValue.textContent = rawR.toFixed(2);
+
+                    const confidence = Math.min(1, ess / 10);
+                    const adjustedR = confidence * rawR + (1 - confidence) * 1.0;
+
+                    if (essFill) {
+                        const percent = Math.round(confidence * 100);
+                        essFill.style.width = percent + '%';
+                        essFill.textContent = percent + '%';
+                        if (confidence >= 1) {
+                            essFill.style.background = 'var(--success)';
+                        } else if (confidence >= 0.5) {
+                            essFill.style.background = 'var(--warning)';
+                        } else {
+                            essFill.style.background = 'var(--danger)';
+                        }
+                    }
+
+                    if (essRawR) essRawR.textContent = rawR.toFixed(2);
+                    if (essFormula) essFormula.textContent = confidence.toFixed(2) + ' x ' + rawR.toFixed(2) + ' + ' + (1 - confidence).toFixed(2) + ' x 1.0';
+                    if (essAdjustedR) essAdjustedR.textContent = adjustedR.toFixed(2);
+                } catch (err) {}
+            }
+
+            const essSlider = document.getElementById('essSlider');
+            const rawRSlider = document.getElementById('rawRSlider');
+            if (essSlider) {
+                essSlider.addEventListener('input', updateESS);
+                essSlider.addEventListener('change', updateESS);
+            }
+            if (rawRSlider) {
+                rawRSlider.addEventListener('input', updateESS);
+                rawRSlider.addEventListener('change', updateESS);
+            }
+            updateESS();
+
+            // Zero-Sum Chart
+            function drawZeroSumChart() {
+                try {
+                    const chart = document.getElementById('zeroSumChart');
+                    if (!chart) return;
+
+                    const width = 600;
+                    const height = 300;
+
+                    let svg = '';
+
+                    // Stakes (left)
+                    svg += '<text x="100" y="30" text-anchor="middle" fill="#333" font-size="14" font-weight="600">Stakes In</text>';
+
+                    const stakes = [
+                        { label: 'A', amount: 2500, color: '#ef4444' },
+                        { label: 'B', amount: 3750, color: '#22c55e' },
+                        { label: 'C', amount: 5000, color: '#f59e0b' }
+                    ];
+
+                    let stakeY = 50;
+                    stakes.forEach(function(s) {
+                        const h = s.amount / 100;
+                        svg += '<rect x="60" y="' + stakeY + '" width="80" height="' + h + '" fill="' + s.color + '" rx="4"/>';
+                        svg += '<text x="100" y="' + (stakeY + h/2 + 4) + '" text-anchor="middle" fill="white" font-size="11" font-weight="600">$' + (s.amount/1000).toFixed(1) + 'k</text>';
+                        stakeY += h + 5;
+                    });
+
+                    svg += '<text x="100" y="' + (stakeY + 20) + '" text-anchor="middle" fill="#666" font-size="12">Total: $11,250</text>';
+
+                    // Arrow
+                    svg += '<path d="M180 150 L260 150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>';
+                    svg += '<text x="220" y="140" text-anchor="middle" fill="#666" font-size="11">Scale by k</text>';
+
+                    // Middle (raw returns)
+                    svg += '<text x="300" y="30" text-anchor="middle" fill="#333" font-size="14" font-weight="600">Raw Returns</text>';
+
+                    const rawReturns = [
+                        { label: 'A', amount: 1900, color: '#ef4444' },
+                        { label: 'B', amount: 6450, color: '#22c55e' },
+                        { label: 'C', amount: 3900, color: '#f59e0b' }
+                    ];
+
+                    let rawY = 50;
+                    rawReturns.forEach(function(r) {
+                        const h = r.amount / 100;
+                        svg += '<rect x="260" y="' + rawY + '" width="80" height="' + h + '" fill="' + r.color + '" opacity="0.5" rx="4" stroke="' + r.color + '" stroke-width="2" stroke-dasharray="4,4"/>';
+                        svg += '<text x="300" y="' + (rawY + h/2 + 4) + '" text-anchor="middle" fill="' + r.color + '" font-size="11" font-weight="600">$' + (r.amount/1000).toFixed(1) + 'k</text>';
+                        rawY += h + 5;
+                    });
+
+                    svg += '<text x="300" y="' + (rawY + 20) + '" text-anchor="middle" fill="#666" font-size="12">Total: $12,250</text>';
+                    svg += '<text x="300" y="' + (rawY + 35) + '" text-anchor="middle" fill="var(--danger)" font-size="11">k = 11250/12250 = 0.918</text>';
+
+                    // Arrow
+                    svg += '<path d="M380 150 L460 150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>';
+                    svg += '<text x="420" y="140" text-anchor="middle" fill="#666" font-size="11">x 0.918</text>';
+
+                    // Final returns (right)
+                    svg += '<text x="500" y="30" text-anchor="middle" fill="#333" font-size="14" font-weight="600">Final Returns</text>';
+
+                    const finalReturns = [
+                        { label: 'A', amount: 1744, color: '#ef4444' },
+                        { label: 'B', amount: 5921, color: '#22c55e' },
+                        { label: 'C', amount: 3580, color: '#f59e0b' }
+                    ];
+
+                    let finalY = 50;
+                    finalReturns.forEach(function(f) {
+                        const h = f.amount / 100;
+                        svg += '<rect x="460" y="' + finalY + '" width="80" height="' + h + '" fill="' + f.color + '" rx="4"/>';
+                        svg += '<text x="500" y="' + (finalY + h/2 + 4) + '" text-anchor="middle" fill="white" font-size="11" font-weight="600">$' + (f.amount/1000).toFixed(1) + 'k</text>';
+                        finalY += h + 5;
+                    });
+
+                    svg += '<text x="500" y="' + (finalY + 20) + '" text-anchor="middle" fill="var(--success)" font-size="12" font-weight="600">Total: $11,245</text>';
+
+                    // Arrow marker
+                    svg += '<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#666"/></marker></defs>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            drawZeroSumChart();
+
+            // Example Chart
+            function drawExampleChart() {
+                try {
+                    const chart = document.getElementById('exampleChart');
+                    if (!chart) return;
+
+                    const width = 600;
+                    const height = 350;
+
+                    let svg = '';
+
+                    // Data flow visualization
+                    const employers = [
+                        { id: 'A', color: '#ef4444', n: 0.80, benchmark: 1.05, r: 0.76, stake: 2500, return: 1744 },
+                        { id: 'B', color: '#22c55e', n: 1.67, benchmark: 0.97, r: 1.72, stake: 3750, return: 5921 },
+                        { id: 'C', color: '#f59e0b', n: 0.83, benchmark: 1.06, r: 0.78, stake: 5000, return: 3580 }
+                    ];
+
+                    // Column headers
+                    const cols = ['Normalized n', 'Benchmark', 'Raw r', 'Stake', 'Return', 'Net'];
+                    const colX = [80, 160, 240, 340, 440, 540];
+
+                    cols.forEach(function(col, i) {
+                        svg += '<text x="' + colX[i] + '" y="30" text-anchor="middle" fill="#666" font-size="11" font-weight="600">' + col + '</text>';
+                    });
+
+                    employers.forEach(function(emp, i) {
+                        const y = 80 + i * 90;
+
+                        // Employer circle
+                        svg += '<circle cx="20" cy="' + y + '" r="20" fill="' + emp.color + '"/>';
+                        svg += '<text x="20" y="' + (y + 5) + '" text-anchor="middle" fill="white" font-weight="700" font-size="14">' + emp.id + '</text>';
+
+                        // Values
+                        svg += '<text x="' + colX[0] + '" y="' + (y + 5) + '" text-anchor="middle" fill="#333" font-size="14">' + emp.n.toFixed(2) + '</text>';
+                        svg += '<text x="' + colX[1] + '" y="' + (y + 5) + '" text-anchor="middle" fill="#666" font-size="14">' + emp.benchmark.toFixed(2) + '</text>';
+                        svg += '<text x="' + colX[2] + '" y="' + (y + 5) + '" text-anchor="middle" fill="' + (emp.r > 1 ? 'var(--success)' : 'var(--danger)') + '" font-size="14" font-weight="600">' + emp.r.toFixed(2) + '</text>';
+                        svg += '<text x="' + colX[3] + '" y="' + (y + 5) + '" text-anchor="middle" fill="#333" font-size="14">$' + (emp.stake/1000).toFixed(1) + 'k</text>';
+                        svg += '<text x="' + colX[4] + '" y="' + (y + 5) + '" text-anchor="middle" fill="#333" font-size="14">$' + (emp.return/1000).toFixed(1) + 'k</text>';
+
+                        const net = emp.return - emp.stake;
+                        const netColor = net > 0 ? 'var(--success)' : 'var(--danger)';
+                        const netSign = net > 0 ? '+' : '';
+                        svg += '<text x="' + colX[5] + '" y="' + (y + 5) + '" text-anchor="middle" fill="' + netColor + '" font-size="14" font-weight="700">' + netSign + '$' + (net/1000).toFixed(1) + 'k</text>';
+
+                        // Arrows between columns
+                        svg += '<path d="M' + (colX[0] + 30) + ' ' + y + ' L' + (colX[1] - 30) + ' ' + y + '" stroke="#ddd" stroke-width="1" marker-end="url(#smallarrow)"/>';
+                        svg += '<path d="M' + (colX[1] + 30) + ' ' + y + ' L' + (colX[2] - 20) + ' ' + y + '" stroke="#ddd" stroke-width="1" marker-end="url(#smallarrow)"/>';
+                    });
+
+                    // Formula labels
+                    svg += '<text x="' + ((colX[0] + colX[1])/2) + '" y="320" text-anchor="middle" fill="#888" font-size="10">n / benchmark</text>';
+                    svg += '<text x="' + ((colX[2] + colX[3])/2) + '" y="320" text-anchor="middle" fill="#888" font-size="10">stake x r x k</text>';
+                    svg += '<text x="' + ((colX[4] + colX[5])/2) + '" y="320" text-anchor="middle" fill="#888" font-size="10">return - stake</text>';
+
+                    // Arrow marker
+                    svg += '<defs><marker id="smallarrow" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#ddd"/></marker></defs>';
+
+                    chart.innerHTML = svg;
+                } catch (err) {}
+            }
+
+            drawExampleChart();
+
+            // Resize handler
+            window.addEventListener('resize', function() {
+                try {
+                    drawGaussianChart();
+                    drawTimeKernelChart();
+                    drawSalaryKernelChart();
+                    drawHeatmapChart();
+                    drawExpectedChart();
+                    drawBenchmarkChart();
+                    drawZeroSumChart();
+                    drawExampleChart();
+                } catch (err) {}
+            });
+        });
+    </script>
+</body>
+</html>
