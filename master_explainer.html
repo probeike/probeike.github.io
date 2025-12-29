@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Matching Platform - Complete Interactive Guide</title>
+    <style>
+        :root {
+            --color-primary: #3b82f6;
+            --color-primary-dark: #2563eb;
+            --color-primary-light: #60a5fa;
+            --color-success: #10b981;
+            --color-success-bg: #d1fae5;
+            --color-warning: #f59e0b;
+            --color-warning-bg: #fef3c7;
+            --color-danger: #ef4444;
+            --color-danger-bg: #fee2e2;
+            --color-info-bg: #dbeafe;
+            --color-purple: #7c3aed;
+            --color-purple-bg: #f3e8ff;
+            --color-text: #1f2937;
+            --color-text-light: #6b7280;
+            --color-text-inverse: #f9fafb;
+            --color-bg: #ffffff;
+            --color-bg-alt: #f3f4f6;
+            --color-bg-elevated: #ffffff;
+            --color-border: #e5e7eb;
+            --color-border-light: #f3f4f6;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            /* SVG colors */
+            --svg-text: #1f2937;
+            --svg-text-light: #6b7280;
+            --svg-bg: #f9fafb;
+            --svg-grid: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --color-primary: #60a5fa;
+            --color-primary-dark: #3b82f6;
+            --color-primary-light: #93c5fd;
+            --color-success: #34d399;
+            --color-success-bg: #064e3b;
+            --color-warning: #fbbf24;
+            --color-warning-bg: #78350f;
+            --color-danger: #f87171;
+            --color-danger-bg: #7f1d1d;
+            --color-info-bg: #1e3a5f;
+            --color-purple: #a78bfa;
+            --color-purple-bg: #4c1d95;
+            --color-text: #f3f4f6;
+            --color-text-light: #9ca3af;
+            --color-text-inverse: #1f2937;
+            --color-bg: #111827;
+            --color-bg-alt: #1f2937;
+            --color-bg-elevated: #1f2937;
+            --color-border: #374151;
+            --color-border-light: #1f2937;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
+            /* SVG colors for dark mode */
+            --svg-text: #f3f4f6;
+            --svg-text-light: #9ca3af;
+            --svg-bg: #1f2937;
+            --svg-grid: #374151;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-bg);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--color-bg);
+            border-right: 1px solid var(--color-border);
+            overflow-y: auto;
+            z-index: 100;
+            padding: var(--spacing-lg);
+            transition: transform var(--transition-normal);
+        }
+
+        .nav-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--color-primary);
+        }
+
+        .nav-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .nav-link {
+            display: block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-link:hover {
+            background: var(--color-bg-alt);
+            color: var(--color-primary);
+        }
+
+        .nav-link.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Mobile nav toggle */
+        .nav-toggle {
+            display: none;
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: var(--shadow-lg);
+            font-size: 1.5rem;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        .section {
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 var(--spacing-lg) 0;
+            color: var(--color-text);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+            color: var(--color-text);
+        }
+
+        p {
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--color-info-bg) 0%, var(--color-purple-bg) 100%);
+        }
+
+        /* Interactive elements */
+        .interactive-box {
+            background: var(--color-bg-alt);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .slider-container {
+            margin: var(--spacing-md) 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+        }
+
+        .slider-value {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--color-border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Result displays */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .result-item {
+            background: var(--color-bg);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--color-border);
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* SVG containers */
+        .svg-container {
+            width: 100%;
+            max-width: 100%;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .svg-container svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--color-bg-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-border);
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .info-box.success {
+            background: var(--color-success-bg);
+            border-left: 4px solid var(--color-success);
+        }
+
+        .info-box.warning {
+            background: var(--color-warning-bg);
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .info-box.danger {
+            background: var(--color-danger-bg);
+            border-left: 4px solid var(--color-danger);
+        }
+
+        .info-box.info {
+            background: var(--color-info-bg);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            z-index: 102;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-border);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            position: absolute;
+            transition: opacity var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .theme-toggle .icon-moon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        .theme-toggle .icon-sun {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        [data-theme="dark"] .theme-toggle .icon-moon {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+
+        [data-theme="dark"] .theme-toggle .icon-sun {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: var(--spacing-lg) 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        th {
+            background: var(--color-bg-alt);
+            font-weight: 600;
+        }
+
+        /* Formula display */
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: var(--color-bg-alt);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: var(--spacing-md) 0;
+        }
+
+        /* Dot visualization */
+        .dot-container {
+            position: relative;
+            min-height: 200px;
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .dot.candidate {
+            background: var(--color-primary);
+        }
+
+        .dot.failed {
+            background: var(--color-danger);
+        }
+
+        .dot.declined {
+            background: var(--color-warning);
+        }
+
+        .dot.accepted {
+            background: var(--color-success);
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.85rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav {
+                transform: translateX(-100%);
+            }
+
+            .nav.open {
+                transform: translateX(0);
+            }
+
+            .nav-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .section {
+                padding: var(--spacing-lg);
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .result-value {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Accessibility */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="icon-moon">🌙</span>
+        <span class="icon-sun">☀️</span>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav" aria-label="Main navigation">
+        <div class="nav-header">Job Matching Platform</div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Part 1: Platform Overview</div>
+            <a href="#intro" class="nav-link">Introduction</a>
+            <a href="#problem" class="nav-link">The Problem</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#fee-calculator" class="nav-link">Fee Calculator</a>
+            <a href="#candidate-outcomes" class="nav-link">Candidate Outcomes</a>
+            <a href="#employer-basics" class="nav-link">Employer Basics</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Part 2: Simulations</div>
+            <a href="#job-simulation" class="nav-link">Job Posting Simulation</a>
+            <a href="#employer-comparison" class="nav-link">Employer Comparison</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Part 3: Advanced Scoring</div>
+            <a href="#scoring-problem" class="nav-link">The Scoring Problem</a>
+            <a href="#kernel-functions" class="nav-link">Kernel Functions</a>
+            <a href="#time-kernel" class="nav-link">Time Decay</a>
+            <a href="#salary-kernel" class="nav-link">Salary Similarity</a>
+            <a href="#combined-weights" class="nav-link">Combined Weights</a>
+            <a href="#normalization" class="nav-link">Normalization</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Part 4: Robustness</div>
+            <a href="#ess" class="nav-link">Effective Sample Size</a>
+            <a href="#zero-sum" class="nav-link">Zero-Sum Batching</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Part 5: Putting It Together</div>
+            <a href="#algorithm" class="nav-link">Complete Algorithm</a>
+            <a href="#worked-example" class="nav-link">Worked Example</a>
+            <a href="#equilibrium" class="nav-link">System Equilibrium</a>
+        </div>
+    </nav>
+
+    <!-- Mobile nav toggle -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        ☰
+    </button>
+
+    <!-- Main content -->
+    <main class="main">
+        <!-- SECTION: Introduction -->
+        <section class="section" id="intro">
+            <h1 class="section-title">Welcome to the Job Matching Platform</h1>
+            <p>This interactive guide explains how our platform creates better job matches through economic incentives. Both candidates and employers stake money to participate, creating signals that filter for serious, well-calibrated actors.</p>
+
+            <div class="card">
+                <div class="card-title">What You'll Learn</div>
+                <p><strong>Part 1:</strong> Platform basics—how fees work, what happens when you apply, and employer scoring fundamentals.</p>
+                <p><strong>Part 2:</strong> Interactive simulations—see how a job posting plays out and how employers compete.</p>
+                <p><strong>Part 3:</strong> Advanced scoring—the mathematics behind fair employer comparison using kernel functions.</p>
+                <p><strong>Part 4:</strong> Robustness—how we handle edge cases and ensure fair payouts.</p>
+                <p><strong>Part 5:</strong> The complete picture—the full algorithm and how the system reaches equilibrium.</p>
+            </div>
+        </section>
+
+        <!-- SECTION: The Problem -->
+        <section class="section" id="problem">
+            <h2 class="section-title">The Problem We're Solving</h2>
+
+            <p>The current job market is broken. Here's why:</p>
+
+            <div class="card">
+                <div class="card-title">🎯 Zero-Cost Applications</div>
+                <p>Candidates can apply to unlimited jobs at no cost. This leads to "spray and pray" behavior where people apply to everything, overwhelming employers with unqualified applications.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🤖 AI Has Killed Traditional Signals</div>
+                <p>Cover letters and application effort used to signal genuine interest. Now AI writes them in seconds. Employers can no longer distinguish between genuine and mass applications.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📉 Adverse Selection</div>
+                <p>The best candidates often don't apply—they're already employed or only looking at specific opportunities. The worst candidates apply everywhere. This creates a "lemons problem" for employers.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📝 Vague Job Descriptions</div>
+                <p>Employers write intentionally vague descriptions to "maximize optionality." This means candidates can't self-select, leading to even more mismatched applications.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">👻 No Accountability</div>
+                <p>Ghosting is endemic on both sides. Phantom job listings waste candidate time. There's no cost to bad behavior.</p>
+            </div>
+
+            <div class="info-box info">
+                <strong>The Core Insight:</strong> When something costs nothing, people treat it as worthless. By adding meaningful stakes on both sides, we create real signals and accountability.
+            </div>
+        </section>
+
+        <!-- SECTION: How It Works -->
+        <section class="section" id="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+
+            <p>Our platform creates a bilateral calibration market. Both sides stake money proportional to the role's value.</p>
+
+            <h3 class="section-subtitle">For Candidates</h3>
+            <div class="interactive-box">
+                <div class="svg-container">
+                    <svg viewBox="0 0 600 150" aria-label="Candidate flow diagram">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+                            </marker>
+                        </defs>
+                        <!-- Steps -->
+                        <rect x="10" y="50" width="120" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="70" y="80" text-anchor="middle" font-size="12" fill="#1f2937">Browse Jobs</text>
+
+                        <line x1="130" y1="75" x2="170" y2="75" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="180" y="50" width="120" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="240" y="75" text-anchor="middle" font-size="12" fill="#1f2937">Pay Fee</text>
+                        <text x="240" y="90" text-anchor="middle" font-size="10" fill="#6b7280">(% of salary)</text>
+
+                        <line x1="300" y1="75" x2="340" y2="75" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="350" y="50" width="120" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="410" y="80" text-anchor="middle" font-size="12" fill="#1f2937">Get Outcome</text>
+
+                        <line x1="470" y1="75" x2="510" y2="75" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="520" y="20" width="70" height="30" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+                        <text x="555" y="40" text-anchor="middle" font-size="10" fill="#ef4444">Failed</text>
+
+                        <rect x="520" y="60" width="70" height="30" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="555" y="80" text-anchor="middle" font-size="10" fill="#f59e0b">Declined</text>
+
+                        <rect x="520" y="100" width="70" height="30" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+                        <text x="555" y="120" text-anchor="middle" font-size="10" fill="#10b981">Accepted</text>
+                    </svg>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">For Employers</h3>
+            <div class="interactive-box">
+                <div class="svg-container">
+                    <svg viewBox="0 0 600 120" aria-label="Employer flow diagram">
+                        <rect x="10" y="35" width="100" height="50" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="60" y="65" text-anchor="middle" font-size="12" fill="#1f2937">Post Job</text>
+
+                        <line x1="110" y1="60" x2="140" y2="60" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="150" y="35" width="100" height="50" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="200" y="55" text-anchor="middle" font-size="12" fill="#1f2937">Stake Money</text>
+                        <text x="200" y="70" text-anchor="middle" font-size="10" fill="#6b7280">(% of salary)</text>
+
+                        <line x1="250" y1="60" x2="280" y2="60" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="290" y="35" width="100" height="50" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="340" y="65" text-anchor="middle" font-size="12" fill="#1f2937">Run Process</text>
+
+                        <line x1="390" y1="60" x2="420" y2="60" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <rect x="430" y="35" width="100" height="50" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="480" y="65" text-anchor="middle" font-size="12" fill="#1f2937">Make Offers</text>
+
+                        <line x1="530" y1="60" x2="560" y2="60" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <text x="580" y="65" text-anchor="start" font-size="11" fill="#1f2937">Scored!</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <strong>The Key Mechanism:</strong> Candidates who accurately self-assess are rewarded. Those who misjudge lose their stake. Employers are scored on efficiency—the fewer wasted applications per hire, the better.
+            </div>
+        </section>
+
+        <!-- SECTION: Fee Calculator -->
+        <section class="section" id="fee-calculator">
+            <h2 class="section-title">Fee Calculator</h2>
+
+            <p>Both candidates and employers pay fees proportional to the role salary. Use the slider to see how fees scale.</p>
+
+            <div class="interactive-box">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Role Salary</span>
+                        <span class="slider-value" id="salaryDisplay">$150,000</span>
+                    </div>
+                    <input type="range" id="salarySlider" min="30000" max="500000" step="10000" value="150000" aria-label="Adjust role salary">
+                </div>
+
+                <div class="result-grid" id="feeResults">
+                    <div class="result-item">
+                        <div class="result-label">Candidate Fee (0.025%)</div>
+                        <div class="result-value" id="candidateFee">$37.50</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Employer Stake (2.5%)</div>
+                        <div class="result-value" id="employerStake">$3,750</div>
+                    </div>
+                </div>
+
+                <div class="formula">
+                    Candidate Fee = Salary × 0.00025<br>
+                    Employer Stake = Salary × 0.025
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Why These Numbers?</h3>
+
+            <div class="card">
+                <div class="card-title">Candidate Fees: Small but Meaningful</div>
+                <p>At 0.025% of salary, fees range from $12.50 for a $50K role to $125 for a $500K role. This is enough to make people think twice about applying randomly, but not so high as to exclude qualified candidates.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Employer Stakes: Skin in the Game</div>
+                <p>At 2.5% of salary, employers stake $1,250–$12,500 depending on the role. This is significant enough to incentivize clear job descriptions and efficient processes, but far less than traditional recruiting fees (typically 15-25% of salary).</p>
+            </div>
+        </section>
+
+        <!-- SECTION: Candidate Outcomes -->
+        <section class="section" id="candidate-outcomes">
+            <h2 class="section-title">Candidate Outcomes</h2>
+
+            <p>When you apply for a job, there are three possible outcomes. Each has different financial implications.</p>
+
+            <div class="svg-container">
+                <svg id="outcomesSvg" viewBox="0 0 600 280" aria-label="Candidate outcomes visualization">
+                    <!-- Failed -->
+                    <rect x="20" y="20" width="170" height="240" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+                    <text x="105" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc2626">Failed</text>
+                    <text x="105" y="80" text-anchor="middle" font-size="12" fill="#7f1d1d">No offer received</text>
+                    <line x1="40" y1="100" x2="170" y2="100" stroke="#fca5a5" stroke-width="1"/>
+                    <text x="105" y="130" text-anchor="middle" font-size="14" fill="#7f1d1d">You lose your fee</text>
+                    <text x="105" y="160" text-anchor="middle" font-size="24" font-weight="bold" fill="#dc2626">-$50</text>
+                    <text x="105" y="190" text-anchor="middle" font-size="11" fill="#7f1d1d">Fee goes to bonus pool</text>
+                    <text x="105" y="210" text-anchor="middle" font-size="11" fill="#7f1d1d">for successful candidates</text>
+
+                    <!-- Declined -->
+                    <rect x="215" y="20" width="170" height="240" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="300" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#b45309">Declined</text>
+                    <text x="300" y="80" text-anchor="middle" font-size="12" fill="#78350f">Got offer, said no</text>
+                    <line x1="235" y1="100" x2="365" y2="100" stroke="#fcd34d" stroke-width="1"/>
+                    <text x="300" y="130" text-anchor="middle" font-size="14" fill="#78350f">Full refund</text>
+                    <text x="300" y="160" text-anchor="middle" font-size="24" font-weight="bold" fill="#b45309">$0</text>
+                    <text x="300" y="190" text-anchor="middle" font-size="11" fill="#78350f">You proved calibration</text>
+                    <text x="300" y="210" text-anchor="middle" font-size="11" fill="#78350f">(got an offer)</text>
+
+                    <!-- Accepted -->
+                    <rect x="410" y="20" width="170" height="240" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+                    <text x="495" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#059669">Accepted</text>
+                    <text x="495" y="80" text-anchor="middle" font-size="12" fill="#064e3b">Got offer, said yes</text>
+                    <line x1="430" y1="100" x2="560" y2="100" stroke="#6ee7b7" stroke-width="1"/>
+                    <text x="495" y="130" text-anchor="middle" font-size="14" fill="#064e3b">Refund + Bonus</text>
+                    <text x="495" y="160" text-anchor="middle" font-size="24" font-weight="bold" fill="#059669">+$950</text>
+                    <text x="495" y="190" text-anchor="middle" font-size="11" fill="#064e3b">Your fee back + share</text>
+                    <text x="495" y="210" text-anchor="middle" font-size="11" fill="#064e3b">of failed candidates' fees</text>
+                </svg>
+            </div>
+
+            <div class="info-box info">
+                <strong>The Bonus Pool:</strong> All fees from failed candidates are pooled together and split among candidates who accept offers. In a typical scenario with 40 applicants, 2 acceptances, and $50 fees: each accepted candidate gets $50 (refund) + $900 (share of $1,800 pool) = $950.
+            </div>
+
+            <h3 class="section-subtitle">The Incentive Structure</h3>
+            <p>This creates a powerful self-selection mechanism:</p>
+            <ul>
+                <li><strong>Well-calibrated candidates</strong> (who apply only where they're likely to succeed) have positive expected value</li>
+                <li><strong>Poorly-calibrated candidates</strong> (who spray applications) will lose money over time</li>
+                <li><strong>Declining an offer</strong> proves you can get offers but doesn't profit—encouraging honest job-seeking</li>
+            </ul>
+        </section>
+
+        <!-- SECTION: Employer Basics -->
+        <section class="section" id="employer-basics">
+            <h2 class="section-title">Employer Scoring Basics</h2>
+
+            <p>Employers are scored on their <strong>efficiency ratio</strong>—how many applicants it takes to make a hire. Lower is better.</p>
+
+            <div class="interactive-box">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Number of Applicants</span>
+                        <span class="slider-value" id="applicantsDisplay">40</span>
+                    </div>
+                    <input type="range" id="applicantsSlider" min="5" max="100" value="40" aria-label="Adjust number of applicants">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Number of Acceptances</span>
+                        <span class="slider-value" id="acceptancesDisplay">2</span>
+                    </div>
+                    <input type="range" id="acceptancesSlider" min="1" max="10" value="2" aria-label="Adjust number of acceptances">
+                </div>
+
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">Your Ratio</div>
+                        <div class="result-value" id="yourRatio">20</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Platform Median</div>
+                        <div class="result-value" style="color: var(--color-text-light);">25</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Return Multiplier</div>
+                        <div class="result-value" id="returnMultiplier">1.25×</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Net Result</div>
+                        <div class="result-value" id="netResult">+$1,250</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formula">
+                Efficiency Ratio = Applicants / Acceptances<br>
+                Return Multiplier = Median Ratio / Your Ratio<br>
+                (capped between 0.5× and 1.5×)<br>
+                Return = Stake × Return Multiplier
+            </div>
+
+            <h3 class="section-subtitle">What This Means</h3>
+
+            <div class="info-box success">
+                <strong>Beat the median:</strong> If your ratio is better (lower) than the platform median, you get a bonus. Precise job descriptions attract fewer, better-matched applicants.
+            </div>
+
+            <div class="info-box danger">
+                <strong>Below the median:</strong> If your ratio is worse (higher) than median, you lose part of your stake. Vague descriptions attract too many applicants.
+            </div>
+
+            <p>The median ratio is calculated across all employers in your cohort (similar role types and salaries). This means you're always compared to relevant peers, not arbitrary thresholds.</p>
+        </section>
+
+        <!-- SECTION: Job Simulation -->
+        <section class="section" id="job-simulation">
+            <h2 class="section-title">Job Posting Simulation</h2>
+
+            <p>See how a job posting plays out. Configure the scenario and watch candidates flow through the system.</p>
+
+            <div class="interactive-box">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Total Applicants</span>
+                        <span class="slider-value" id="simApplicantsDisplay">40</span>
+                    </div>
+                    <input type="range" id="simApplicantsSlider" min="10" max="100" value="40" aria-label="Set total applicants">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Offers Made</span>
+                        <span class="slider-value" id="simOffersDisplay">4</span>
+                    </div>
+                    <input type="range" id="simOffersSlider" min="1" max="10" value="4" aria-label="Set offers made">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Acceptances</span>
+                        <span class="slider-value" id="simAcceptancesDisplay">2</span>
+                    </div>
+                    <input type="range" id="simAcceptancesSlider" min="0" max="4" value="2" aria-label="Set acceptances">
+                </div>
+
+                <button class="btn btn-primary" id="runSimulation" style="margin-top: var(--spacing-md);">Run Simulation</button>
+            </div>
+
+            <div class="dot-container" id="simulationContainer" style="height: 250px; margin-top: var(--spacing-lg);">
+                <!-- Dots will be inserted by JavaScript -->
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--color-primary);"></div>
+                    <span>Waiting</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--color-danger);"></div>
+                    <span>Failed</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--color-warning);"></div>
+                    <span>Declined</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--color-success);"></div>
+                    <span>Accepted</span>
+                </div>
+            </div>
+
+            <div class="result-grid" id="simResults" style="margin-top: var(--spacing-lg);">
+                <div class="result-item">
+                    <div class="result-label">Fee Pool</div>
+                    <div class="result-value" id="simFeePool">$2,000</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Lost to Pool</div>
+                    <div class="result-value" id="simLostToPool">$1,800</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Bonus per Accept</div>
+                    <div class="result-value" id="simBonusPerAccept">$900</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Total Payout/Accept</div>
+                    <div class="result-value" id="simTotalPayout">$950</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Employer Comparison -->
+        <section class="section" id="employer-comparison">
+            <h2 class="section-title">Employer Comparison</h2>
+
+            <p>See how five employers with different hiring efficiencies are scored against each other.</p>
+
+            <div class="svg-container">
+                <svg id="comparisonChart" viewBox="0 0 600 350" aria-label="Employer comparison chart">
+                    <!-- Background -->
+                    <rect x="80" y="20" width="500" height="250" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+
+                    <!-- Grid lines -->
+                    <line x1="80" y1="70" x2="580" y2="70" stroke="#e5e7eb" stroke-width="1"/>
+                    <line x1="80" y1="120" x2="580" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+                    <line x1="80" y1="170" x2="580" y2="170" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="5,5"/>
+                    <line x1="80" y1="220" x2="580" y2="220" stroke="#e5e7eb" stroke-width="1"/>
+
+                    <!-- Y-axis labels -->
+                    <text x="70" y="75" text-anchor="end" font-size="11" fill="#6b7280">1.5×</text>
+                    <text x="70" y="125" text-anchor="end" font-size="11" fill="#6b7280">1.25×</text>
+                    <text x="70" y="175" text-anchor="end" font-size="11" fill="#6b7280">1.0×</text>
+                    <text x="70" y="225" text-anchor="end" font-size="11" fill="#6b7280">0.75×</text>
+                    <text x="70" y="275" text-anchor="end" font-size="11" fill="#6b7280">0.5×</text>
+
+                    <!-- Bars - Employer A (ratio 50, worst) -->
+                    <rect x="100" y="220" width="70" height="50" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+                    <text x="135" y="295" text-anchor="middle" font-size="12" fill="#1f2937">A</text>
+                    <text x="135" y="310" text-anchor="middle" font-size="10" fill="#6b7280">Ratio: 50</text>
+                    <text x="135" y="325" text-anchor="middle" font-size="10" fill="#ef4444">-$2,500</text>
+
+                    <!-- Bars - Employer B (ratio 20, good) -->
+                    <rect x="190" y="120" width="70" height="50" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                    <text x="225" y="295" text-anchor="middle" font-size="12" fill="#1f2937">B</text>
+                    <text x="225" y="310" text-anchor="middle" font-size="10" fill="#6b7280">Ratio: 20</text>
+                    <text x="225" y="325" text-anchor="middle" font-size="10" fill="#10b981">+$1,250</text>
+
+                    <!-- Bars - Employer C (ratio 25, median) -->
+                    <rect x="280" y="170" width="70" height="0" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="4"/>
+                    <line x1="280" y1="170" x2="350" y2="170" stroke="#2563eb" stroke-width="3"/>
+                    <text x="315" y="295" text-anchor="middle" font-size="12" fill="#1f2937">C</text>
+                    <text x="315" y="310" text-anchor="middle" font-size="10" fill="#6b7280">Ratio: 25</text>
+                    <text x="315" y="325" text-anchor="middle" font-size="10" fill="#2563eb">$0</text>
+
+                    <!-- Bars - Employer D (ratio 15, best) -->
+                    <rect x="370" y="70" width="70" height="100" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                    <text x="405" y="295" text-anchor="middle" font-size="12" fill="#1f2937">D</text>
+                    <text x="405" y="310" text-anchor="middle" font-size="10" fill="#6b7280">Ratio: 15</text>
+                    <text x="405" y="325" text-anchor="middle" font-size="10" fill="#10b981">+$2,500</text>
+
+                    <!-- Bars - Employer E (ratio 30, below median) -->
+                    <rect x="460" y="170" width="70" height="37" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+                    <text x="495" y="295" text-anchor="middle" font-size="12" fill="#1f2937">E</text>
+                    <text x="495" y="310" text-anchor="middle" font-size="10" fill="#6b7280">Ratio: 30</text>
+                    <text x="495" y="325" text-anchor="middle" font-size="10" fill="#f59e0b">-$850</text>
+
+                    <!-- Median line -->
+                    <text x="585" y="175" text-anchor="start" font-size="10" fill="#2563eb">Median</text>
+                </svg>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employer</th>
+                            <th>Applicants</th>
+                            <th>Hires</th>
+                            <th>Ratio</th>
+                            <th>Multiplier</th>
+                            <th>Net</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A (vague description)</td>
+                            <td>100</td>
+                            <td>2</td>
+                            <td>50</td>
+                            <td>0.50×</td>
+                            <td style="color: var(--color-danger);">-$2,500</td>
+                        </tr>
+                        <tr>
+                            <td>B (clear requirements)</td>
+                            <td>40</td>
+                            <td>2</td>
+                            <td>20</td>
+                            <td>1.25×</td>
+                            <td style="color: var(--color-success);">+$1,250</td>
+                        </tr>
+                        <tr>
+                            <td>C (median performer)</td>
+                            <td>50</td>
+                            <td>2</td>
+                            <td>25</td>
+                            <td>1.00×</td>
+                            <td>$0</td>
+                        </tr>
+                        <tr>
+                            <td>D (excellent targeting)</td>
+                            <td>30</td>
+                            <td>2</td>
+                            <td>15</td>
+                            <td>1.50×</td>
+                            <td style="color: var(--color-success);">+$2,500</td>
+                        </tr>
+                        <tr>
+                            <td>E (somewhat vague)</td>
+                            <td>60</td>
+                            <td>2</td>
+                            <td>30</td>
+                            <td>0.83×</td>
+                            <td style="color: var(--color-warning);">-$850</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box info">
+                <strong>Zero-Sum Among Employers:</strong> The money lost by below-median employers funds the bonuses for above-median employers. The platform transfers value from inefficient to efficient hirers.
+            </div>
+        </section>
+
+        <!-- SECTION: Scoring Problem -->
+        <section class="section" id="scoring-problem">
+            <h2 class="section-title">The Scoring Problem</h2>
+
+            <p>Simple median comparison sounds fair, but it breaks down in practice. Here's why we need something smarter.</p>
+
+            <h3 class="section-subtitle">Problem 1: Time Windows Are Arbitrary</h3>
+            <div class="card">
+                <p>If we compare employers "in the same month," what happens to someone who hired on March 31st vs April 1st? They're in different cohorts despite being one day apart.</p>
+                <div class="info-box warning">
+                    A hire on day 1 of a month vs day 30 creates unfair comparisons with employers 29 days apart while ignoring employers 2 days apart in different months.
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Problem 2: Salary Bands Are Crude</h3>
+            <div class="card">
+                <p>If we compare "$100K-$150K roles," what about a $149K role vs a $151K role? They're nearly identical but in different cohorts.</p>
+                <div class="svg-container">
+                    <svg viewBox="0 0 500 100" aria-label="Salary band problem illustration">
+                        <rect x="50" y="40" width="180" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="4"/>
+                        <text x="140" y="65" text-anchor="middle" font-size="12" fill="#1f2937">$100K - $150K</text>
+
+                        <rect x="270" y="40" width="180" height="40" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2" rx="4"/>
+                        <text x="360" y="65" text-anchor="middle" font-size="12" fill="#1f2937">$150K - $200K</text>
+
+                        <!-- Edge cases -->
+                        <circle cx="225" cy="60" r="8" fill="#ef4444"/>
+                        <text x="225" y="95" text-anchor="middle" font-size="10" fill="#ef4444">$149K</text>
+
+                        <circle cx="275" cy="60" r="8" fill="#ef4444"/>
+                        <text x="275" y="95" text-anchor="middle" font-size="10" fill="#ef4444">$151K</text>
+
+                        <line x1="225" y1="60" x2="275" y2="60" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                    </svg>
+                </div>
+                <p style="text-align: center; color: var(--color-text-light); font-size: 0.9rem;">These two roles are $2K apart but compared to completely different cohorts.</p>
+            </div>
+
+            <h3 class="section-subtitle">The Solution: Continuous Comparison</h3>
+            <p>Instead of discrete buckets, we use <strong>kernel functions</strong> to create smooth, continuous comparisons. Every employer is compared to every other employer, but with weights that reflect how similar they are in terms of timing and salary.</p>
+
+            <div class="info-box success">
+                <strong>Key Insight:</strong> An employer hiring at $150K should be compared strongly to one at $145K, somewhat to one at $120K, and barely to one at $50K. Kernel functions make this mathematically precise.
+            </div>
+        </section>
+
+        <!-- SECTION: Kernel Functions -->
+        <section class="section" id="kernel-functions">
+            <h2 class="section-title">Kernel Functions</h2>
+
+            <p>A <strong>kernel function</strong> measures similarity between two things. It outputs a number between 0 (completely different) and 1 (identical).</p>
+
+            <div class="interactive-box">
+                <h3 class="section-subtitle" style="margin-top: 0;">The Gaussian Kernel</h3>
+                <p>We use the Gaussian (bell curve) kernel. It's smooth, intuitive, and well-understood mathematically.</p>
+
+                <div class="formula">
+                    K(x) = exp(-x² / 2σ²)
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>σ (width parameter)</span>
+                        <span class="slider-value" id="sigmaDisplay">1.0</span>
+                    </div>
+                    <input type="range" id="sigmaSlider" min="0.3" max="2.0" step="0.1" value="1.0" aria-label="Adjust sigma">
+                </div>
+
+                <div class="svg-container">
+                    <svg id="kernelChart" viewBox="0 0 500 200" aria-label="Gaussian kernel visualization">
+                        <!-- Axes -->
+                        <line x1="50" y1="170" x2="450" y2="170" stroke="#e5e7eb" stroke-width="2"/>
+                        <line x1="250" y1="30" x2="250" y2="170" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4"/>
+
+                        <!-- Labels -->
+                        <text x="250" y="190" text-anchor="middle" font-size="11" fill="#6b7280">Distance from center</text>
+                        <text x="30" y="40" text-anchor="middle" font-size="11" fill="#6b7280">1.0</text>
+                        <text x="30" y="175" text-anchor="middle" font-size="11" fill="#6b7280">0</text>
+
+                        <!-- Curve will be drawn by JavaScript -->
+                        <path id="kernelCurve" d="" fill="none" stroke="#2563eb" stroke-width="3"/>
+                        <path id="kernelFill" d="" fill="#dbeafe" opacity="0.5"/>
+                    </svg>
+                </div>
+
+                <p>When σ is <strong>small</strong>, only very similar items count. When σ is <strong>large</strong>, even distant items have some influence.</p>
+            </div>
+
+            <div class="info-box info">
+                <strong>Why Gaussian?</strong> The bell curve naturally captures the intuition that "very similar = high weight, somewhat similar = medium weight, very different = low weight" with smooth transitions.
+            </div>
+        </section>
+
+        <!-- SECTION: Time Kernel -->
+        <section class="section" id="time-kernel">
+            <h2 class="section-title">Time Kernel (Recency)</h2>
+
+            <p>Recent hires are more relevant than old ones. Market conditions change, so a hire from 6 months ago is less informative than one from last week.</p>
+
+            <div class="interactive-box">
+                <div class="formula">
+                    K_time(Δt) = exp(-Δt / τ)<br>
+                    <small>where Δt = days between hires, τ = decay rate (default: 30 days)</small>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>τ (decay rate in days)</span>
+                        <span class="slider-value" id="tauDisplay">30</span>
+                    </div>
+                    <input type="range" id="tauSlider" min="7" max="90" step="1" value="30" aria-label="Adjust tau">
+                </div>
+
+                <div class="svg-container">
+                    <svg id="timeKernelChart" viewBox="0 0 500 200" aria-label="Time kernel visualization">
+                        <!-- Axes -->
+                        <line x1="50" y1="170" x2="450" y2="170" stroke="#e5e7eb" stroke-width="2"/>
+                        <line x1="50" y1="30" x2="50" y2="170" stroke="#e5e7eb" stroke-width="2"/>
+
+                        <!-- Labels -->
+                        <text x="250" y="190" text-anchor="middle" font-size="11" fill="#6b7280">Days ago</text>
+                        <text x="50" y="20" text-anchor="middle" font-size="11" fill="#6b7280">Weight</text>
+                        <text x="25" y="40" text-anchor="middle" font-size="10" fill="#6b7280">1.0</text>
+                        <text x="25" y="175" text-anchor="middle" font-size="10" fill="#6b7280">0</text>
+
+                        <!-- X-axis labels -->
+                        <text x="50" y="185" text-anchor="middle" font-size="9" fill="#6b7280">0</text>
+                        <text x="150" y="185" text-anchor="middle" font-size="9" fill="#6b7280">30</text>
+                        <text x="250" y="185" text-anchor="middle" font-size="9" fill="#6b7280">60</text>
+                        <text x="350" y="185" text-anchor="middle" font-size="9" fill="#6b7280">90</text>
+                        <text x="450" y="185" text-anchor="middle" font-size="9" fill="#6b7280">120</text>
+
+                        <!-- Curve will be drawn by JavaScript -->
+                        <path id="timeCurve" d="" fill="none" stroke="#10b981" stroke-width="3"/>
+                        <path id="timeFill" d="" fill="#d1fae5" opacity="0.5"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">Today</div>
+                    <div class="result-value" id="timeWeight0">100%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">1 week ago</div>
+                    <div class="result-value" id="timeWeight7">79%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">1 month ago</div>
+                    <div class="result-value" id="timeWeight30">37%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">3 months ago</div>
+                    <div class="result-value" id="timeWeight90">5%</div>
+                </div>
+            </div>
+
+            <div class="info-box info">
+                <strong>Why Exponential Decay?</strong> Information loses relevance gradually, not suddenly. A hire from 30 days ago isn't worthless—it's just less relevant than one from yesterday.
+            </div>
+        </section>
+
+        <!-- SECTION: Salary Kernel -->
+        <section class="section" id="salary-kernel">
+            <h2 class="section-title">Salary Kernel (Role Similarity)</h2>
+
+            <p>Similar salaries indicate similar roles. But we use <strong>log-salary</strong> because percentage differences matter more than absolute differences.</p>
+
+            <div class="card">
+                <div class="card-title">Why Log-Salary?</div>
+                <p>A $10K difference means different things at different levels:</p>
+                <ul>
+                    <li>$50K vs $60K = 20% increase (significant!)</li>
+                    <li>$200K vs $210K = 5% increase (minor)</li>
+                </ul>
+                <p>Using log-salary makes these comparisons proportional.</p>
+            </div>
+
+            <div class="interactive-box">
+                <div class="formula">
+                    K_salary(s₁, s₂) = exp(-(log(s₁) - log(s₂))² / 2σ²)<br>
+                    <small>where σ controls how strict the salary matching is (default: 0.5)</small>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Reference Salary</span>
+                        <span class="slider-value" id="refSalaryDisplay">$150,000</span>
+                    </div>
+                    <input type="range" id="refSalarySlider" min="50000" max="300000" step="10000" value="150000" aria-label="Set reference salary">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>σ (similarity width)</span>
+                        <span class="slider-value" id="salarySigmaDisplay">0.5</span>
+                    </div>
+                    <input type="range" id="salarySigmaSlider" min="0.2" max="1.0" step="0.1" value="0.5" aria-label="Adjust salary sigma">
+                </div>
+
+                <div class="svg-container">
+                    <svg id="salaryKernelChart" viewBox="0 0 500 200" aria-label="Salary kernel visualization">
+                        <!-- Axes -->
+                        <line x1="50" y1="170" x2="450" y2="170" stroke="#e5e7eb" stroke-width="2"/>
+                        <line x1="50" y1="30" x2="50" y2="170" stroke="#e5e7eb" stroke-width="2"/>
+
+                        <!-- Labels -->
+                        <text x="250" y="195" text-anchor="middle" font-size="11" fill="#6b7280">Salary</text>
+
+                        <!-- Curve will be drawn by JavaScript -->
+                        <path id="salaryCurve" d="" fill="none" stroke="#7c3aed" stroke-width="3"/>
+                        <path id="salaryFill" d="" fill="#f3e8ff" opacity="0.5"/>
+
+                        <!-- Reference line -->
+                        <line id="salaryRefLine" x1="250" y1="30" x2="250" y2="170" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">Same Salary</div>
+                    <div class="result-value">100%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label" id="salary80Label">$120K</div>
+                    <div class="result-value" id="salaryWeight80">78%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label" id="salary50Label">$75K</div>
+                    <div class="result-value" id="salaryWeight50">24%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label" id="salary200Label">$300K</div>
+                    <div class="result-value" id="salaryWeight200">24%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Combined Weights -->
+        <section class="section" id="combined-weights">
+            <h2 class="section-title">Combined Weights</h2>
+
+            <p>The final weight for comparing two employers combines both kernels:</p>
+
+            <div class="formula" style="text-align: center; font-size: 1.1rem;">
+                W = K_time × K_salary
+            </div>
+
+            <p>This means an employer must be similar in <strong>both</strong> time and salary to have high influence. Being recent but different salary? Low weight. Same salary but old? Low weight.</p>
+
+            <div class="interactive-box">
+                <h3 class="section-subtitle" style="margin-top: 0;">Weight Heatmap</h3>
+                <p>This heatmap shows the combined weight for comparing against a reference employer (you) based on time difference and salary ratio.</p>
+
+                <div class="svg-container">
+                    <svg id="heatmapChart" viewBox="0 0 500 350" aria-label="Combined weight heatmap">
+                        <!-- Title -->
+                        <text x="250" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2937">Comparison Weight by Time and Salary</text>
+
+                        <!-- Y-axis label -->
+                        <text x="15" y="180" text-anchor="middle" font-size="11" fill="#6b7280" transform="rotate(-90, 15, 180)">Days Ago</text>
+
+                        <!-- X-axis label -->
+                        <text x="280" y="310" text-anchor="middle" font-size="11" fill="#6b7280">Salary Ratio (vs Reference)</text>
+
+                        <!-- Heatmap cells will be drawn by JavaScript -->
+                        <g id="heatmapCells"></g>
+
+                        <!-- Axes -->
+                        <line x1="60" y1="40" x2="60" y2="280" stroke="#1f2937" stroke-width="1"/>
+                        <line x1="60" y1="280" x2="460" y2="280" stroke="#1f2937" stroke-width="1"/>
+
+                        <!-- Y-axis labels -->
+                        <text x="55" y="55" text-anchor="end" font-size="10" fill="#6b7280">0</text>
+                        <text x="55" y="100" text-anchor="end" font-size="10" fill="#6b7280">15</text>
+                        <text x="55" y="145" text-anchor="end" font-size="10" fill="#6b7280">30</text>
+                        <text x="55" y="190" text-anchor="end" font-size="10" fill="#6b7280">45</text>
+                        <text x="55" y="235" text-anchor="end" font-size="10" fill="#6b7280">60</text>
+                        <text x="55" y="280" text-anchor="end" font-size="10" fill="#6b7280">75</text>
+
+                        <!-- X-axis labels -->
+                        <text x="60" y="295" text-anchor="middle" font-size="10" fill="#6b7280">0.5×</text>
+                        <text x="160" y="295" text-anchor="middle" font-size="10" fill="#6b7280">0.75×</text>
+                        <text x="260" y="295" text-anchor="middle" font-size="10" fill="#6b7280">1.0×</text>
+                        <text x="360" y="295" text-anchor="middle" font-size="10" fill="#6b7280">1.25×</text>
+                        <text x="460" y="295" text-anchor="middle" font-size="10" fill="#6b7280">1.5×</text>
+
+                        <!-- Legend -->
+                        <defs>
+                            <linearGradient id="heatGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#fee2e2"/>
+                                <stop offset="50%" style="stop-color:#fef3c7"/>
+                                <stop offset="100%" style="stop-color:#d1fae5"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="160" y="320" width="180" height="15" fill="url(#heatGradient)" stroke="#e5e7eb"/>
+                        <text x="160" y="345" text-anchor="middle" font-size="10" fill="#6b7280">0%</text>
+                        <text x="250" y="345" text-anchor="middle" font-size="10" fill="#6b7280">50%</text>
+                        <text x="340" y="345" text-anchor="middle" font-size="10" fill="#6b7280">100%</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <strong>Reading the Heatmap:</strong> The brightest green (top center) represents employers with the same salary hired today—maximum relevance. The red corners represent employers with very different salaries hired long ago—minimal relevance.
+            </div>
+        </section>
+
+        <!-- SECTION: Normalization -->
+        <section class="section" id="normalization">
+            <h2 class="section-title">Normalization: Expected Efficiency</h2>
+
+            <p>Different salary levels have different "normal" efficiency ratios. Entry-level roles attract more applicants than executive roles. We need to account for this.</p>
+
+            <h3 class="section-subtitle">The Problem</h3>
+            <div class="card">
+                <p>A ratio of 30 might be excellent for a $50K role (which attracts many applicants) but poor for a $300K role (which attracts few). Comparing raw ratios across salary levels isn't fair.</p>
+            </div>
+
+            <h3 class="section-subtitle">The Solution: E(s)</h3>
+            <p>We calculate the <strong>expected efficiency E(s)</strong> at each salary level using weighted averages:</p>
+
+            <div class="formula">
+                E(s) = Σ(W_j × ratio_j) / Σ(W_j)<br>
+                <small>where W_j is the combined weight for employer j</small>
+            </div>
+
+            <div class="interactive-box">
+                <div class="svg-container">
+                    <svg id="expectedChart" viewBox="0 0 500 250" aria-label="Expected efficiency by salary">
+                        <!-- Axes -->
+                        <line x1="60" y1="200" x2="460" y2="200" stroke="#e5e7eb" stroke-width="2"/>
+                        <line x1="60" y1="40" x2="60" y2="200" stroke="#e5e7eb" stroke-width="2"/>
+
+                        <!-- Labels -->
+                        <text x="250" y="235" text-anchor="middle" font-size="11" fill="#6b7280">Salary Level</text>
+                        <text x="20" y="120" text-anchor="middle" font-size="11" fill="#6b7280" transform="rotate(-90, 20, 120)">Expected Ratio E(s)</text>
+
+                        <!-- X-axis labels -->
+                        <text x="60" y="220" text-anchor="middle" font-size="9" fill="#6b7280">$50K</text>
+                        <text x="160" y="220" text-anchor="middle" font-size="9" fill="#6b7280">$100K</text>
+                        <text x="260" y="220" text-anchor="middle" font-size="9" fill="#6b7280">$150K</text>
+                        <text x="360" y="220" text-anchor="middle" font-size="9" fill="#6b7280">$200K</text>
+                        <text x="460" y="220" text-anchor="middle" font-size="9" fill="#6b7280">$300K</text>
+
+                        <!-- Curve -->
+                        <path d="M60,60 Q160,80 260,110 T460,180" fill="none" stroke="#2563eb" stroke-width="3"/>
+
+                        <!-- Data points -->
+                        <circle cx="60" cy="60" r="6" fill="#2563eb"/>
+                        <circle cx="160" cy="85" r="6" fill="#2563eb"/>
+                        <circle cx="260" cy="110" r="6" fill="#2563eb"/>
+                        <circle cx="360" cy="145" r="6" fill="#2563eb"/>
+                        <circle cx="460" cy="180" r="6" fill="#2563eb"/>
+
+                        <!-- Y values -->
+                        <text x="75" y="55" font-size="10" fill="#2563eb">40</text>
+                        <text x="175" y="80" font-size="10" fill="#2563eb">32</text>
+                        <text x="275" y="105" font-size="10" fill="#2563eb">25</text>
+                        <text x="375" y="140" font-size="10" fill="#2563eb">18</text>
+                        <text x="445" y="175" font-size="10" fill="#2563eb">12</text>
+                    </svg>
+                </div>
+                <p style="text-align: center; color: var(--color-text-light);">Lower salaries typically have higher expected ratios (more applicants per hire).</p>
+            </div>
+
+            <h3 class="section-subtitle">Personalized Benchmark</h3>
+            <p>Your benchmark isn't a single number—it's calculated specifically for your salary level using weighted contributions from all other employers:</p>
+
+            <div class="formula">
+                Your Benchmark = E(your salary) = weighted average of similar employers' ratios
+            </div>
+
+            <div class="info-box info">
+                <strong>Fair Comparison:</strong> You're compared against what's expected for employers at your salary level, weighted by how similar they are to you in both time and salary.
+            </div>
+        </section>
+
+        <!-- SECTION: ESS -->
+        <section class="section" id="ess">
+            <h2 class="section-title">Effective Sample Size (ESS)</h2>
+
+            <p>What if there aren't many similar employers to compare against? We need to handle sparse data gracefully.</p>
+
+            <h3 class="section-subtitle">The Problem</h3>
+            <div class="card">
+                <p>If you're hiring at an unusual salary (say $275K) or in a new market, there might be only 2-3 employers with meaningful weights. Basing your benchmark on such thin data is risky.</p>
+            </div>
+
+            <h3 class="section-subtitle">The Solution: ESS</h3>
+            <p><strong>Effective Sample Size</strong> measures how much "real" data we have after weighting:</p>
+
+            <div class="formula">
+                ESS = (Σ W_j)² / Σ(W_j²)
+            </div>
+
+            <div class="interactive-box">
+                <p>ESS tells us how many "equivalent full-weight observations" we have:</p>
+
+                <div class="svg-container">
+                    <svg id="essChart" viewBox="0 0 500 150" aria-label="ESS gauge">
+                        <!-- Background track -->
+                        <rect x="50" y="60" width="400" height="30" rx="15" fill="#f3f4f6" stroke="#e5e7eb"/>
+
+                        <!-- Colored zones -->
+                        <rect x="50" y="60" width="100" height="30" rx="15" fill="#fee2e2"/>
+                        <rect x="150" y="60" width="100" height="30" fill="#fef3c7"/>
+                        <rect x="250" y="60" width="200" height="30" rx="15" fill="#d1fae5"/>
+
+                        <!-- Zone labels -->
+                        <text x="100" y="110" text-anchor="middle" font-size="10" fill="#ef4444">Shrink to global</text>
+                        <text x="200" y="110" text-anchor="middle" font-size="10" fill="#f59e0b">Partial shrinkage</text>
+                        <text x="350" y="110" text-anchor="middle" font-size="10" fill="#10b981">Use local benchmark</text>
+
+                        <!-- Scale markers -->
+                        <text x="50" y="55" text-anchor="middle" font-size="10" fill="#6b7280">0</text>
+                        <text x="150" y="55" text-anchor="middle" font-size="10" fill="#6b7280">5</text>
+                        <text x="250" y="55" text-anchor="middle" font-size="10" fill="#6b7280">10</text>
+                        <text x="450" y="55" text-anchor="middle" font-size="10" fill="#6b7280">30+</text>
+
+                        <!-- Indicator (will be positioned by JS) -->
+                        <circle id="essIndicator" cx="300" cy="75" r="12" fill="#1f2937" stroke="white" stroke-width="2"/>
+                        <text id="essValue" x="300" y="80" text-anchor="middle" font-size="10" fill="white" font-weight="bold">15</text>
+                    </svg>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Shrinkage: Blending Local and Global</h3>
+            <p>When ESS is low, we blend the local benchmark with a global average:</p>
+
+            <div class="formula">
+                α = ESS / (ESS + k)  where k ≈ 10<br><br>
+                Final Benchmark = α × Local Benchmark + (1-α) × Global Average
+            </div>
+
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">ESS = 5</div>
+                    <div class="result-value" style="color: var(--color-warning);">33% local</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">ESS = 10</div>
+                    <div class="result-value" style="color: var(--color-text);">50% local</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">ESS = 20</div>
+                    <div class="result-value" style="color: var(--color-success);">67% local</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">ESS = 50</div>
+                    <div class="result-value" style="color: var(--color-success);">83% local</div>
+                </div>
+            </div>
+
+            <div class="info-box info">
+                <strong>Why Shrinkage?</strong> It's better to be slightly biased toward the global average than to have wild swings based on 2-3 data points. As more data accumulates, shrinkage automatically decreases.
+            </div>
+        </section>
+
+        <!-- SECTION: Zero-Sum -->
+        <section class="section" id="zero-sum">
+            <h2 class="section-title">Zero-Sum Batch Normalization</h2>
+
+            <p>The employer scoring system should be zero-sum: money lost by below-benchmark employers should fund bonuses for above-benchmark employers.</p>
+
+            <h3 class="section-subtitle">The Problem</h3>
+            <div class="card">
+                <p>If we calculate multipliers independently for each employer, there's no guarantee they balance out. We might pay out more than we collect, or vice versa.</p>
+            </div>
+
+            <h3 class="section-subtitle">The Solution: Batch Normalization</h3>
+            <p>We process employers in batches and adjust multipliers to ensure zero-sum:</p>
+
+            <div class="interactive-box">
+                <div class="svg-container">
+                    <svg id="zeroSumChart" viewBox="0 0 500 250" aria-label="Zero-sum batch normalization">
+                        <!-- Title -->
+                        <text x="250" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2937">Batch Normalization Example</text>
+
+                        <!-- Before normalization -->
+                        <text x="125" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b7280">Before</text>
+
+                        <rect x="50" y="60" width="50" height="60" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+                        <text x="75" y="95" text-anchor="middle" font-size="11" fill="#7f1d1d">-$800</text>
+
+                        <rect x="110" y="70" width="50" height="40" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                        <text x="135" y="95" text-anchor="middle" font-size="11" fill="#064e3b">+$500</text>
+
+                        <rect x="170" y="90" width="50" height="20" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                        <text x="195" y="105" text-anchor="middle" font-size="11" fill="#064e3b">+$200</text>
+
+                        <text x="125" y="145" text-anchor="middle" font-size="11" fill="#ef4444">Net: -$100</text>
+                        <text x="125" y="160" text-anchor="middle" font-size="10" fill="#6b7280">(platform loses)</text>
+
+                        <!-- Arrow -->
+                        <path d="M230,100 L270,100" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="250" y="90" text-anchor="middle" font-size="10" fill="#6b7280">normalize</text>
+
+                        <!-- After normalization -->
+                        <text x="375" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b7280">After</text>
+
+                        <rect x="300" y="63" width="50" height="54" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+                        <text x="325" y="95" text-anchor="middle" font-size="11" fill="#7f1d1d">-$700</text>
+
+                        <rect x="360" y="73" width="50" height="34" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                        <text x="385" y="95" text-anchor="middle" font-size="11" fill="#064e3b">+$438</text>
+
+                        <rect x="420" y="90" width="50" height="17" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+                        <text x="445" y="103" text-anchor="middle" font-size="11" fill="#064e3b">+$175</text>
+
+                        <text x="375" y="145" text-anchor="middle" font-size="11" fill="#10b981">Net: -$87</text>
+                        <text x="375" y="160" text-anchor="middle" font-size="10" fill="#6b7280">(closer to zero)</text>
+
+                        <!-- Explanation -->
+                        <rect x="50" y="180" width="400" height="50" fill="#f3f4f6" rx="8"/>
+                        <text x="250" y="200" text-anchor="middle" font-size="11" fill="#1f2937">All multipliers are scaled proportionally so that:</text>
+                        <text x="250" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#2563eb">Total Penalties ≈ Total Bonuses</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="formula">
+                Adjustment Factor = Total Penalties / Total Bonuses<br><br>
+                Adjusted Bonus = Original Bonus × Adjustment Factor
+            </div>
+
+            <div class="info-box success">
+                <strong>The Result:</strong> Employers compete against each other in a closed system. Better employers profit at the expense of worse employers, with no net flow in or out of the system.
+            </div>
+        </section>
+
+        <!-- SECTION: Algorithm -->
+        <section class="section" id="algorithm">
+            <h2 class="section-title">The Complete Algorithm</h2>
+
+            <p>Here's how everything fits together when processing a batch of employers.</p>
+
+            <div class="interactive-box">
+                <div class="svg-container">
+                    <svg viewBox="0 0 500 400" aria-label="Algorithm flowchart">
+                        <!-- Step 1 -->
+                        <rect x="150" y="10" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="250" y="35" text-anchor="middle" font-size="12" fill="#1f2937">1. Calculate Weights</text>
+                        <line x1="250" y1="50" x2="250" y2="70" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Step 2 -->
+                        <rect x="150" y="70" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="250" y="95" text-anchor="middle" font-size="12" fill="#1f2937">2. Compute E(s) for each</text>
+                        <line x1="250" y1="110" x2="250" y2="130" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Step 3 -->
+                        <rect x="150" y="130" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="250" y="155" text-anchor="middle" font-size="12" fill="#1f2937">3. Calculate ESS</text>
+                        <line x1="250" y1="170" x2="250" y2="190" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Step 4 -->
+                        <rect x="150" y="190" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="250" y="215" text-anchor="middle" font-size="12" fill="#1f2937">4. Apply Shrinkage</text>
+                        <line x1="250" y1="230" x2="250" y2="250" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Step 5 -->
+                        <rect x="150" y="250" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="250" y="275" text-anchor="middle" font-size="12" fill="#1f2937">5. Compute Multipliers</text>
+                        <line x1="250" y1="290" x2="250" y2="310" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Step 6 -->
+                        <rect x="150" y="310" width="200" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+                        <text x="250" y="335" text-anchor="middle" font-size="12" fill="#1f2937">6. Zero-Sum Normalize</text>
+                        <line x1="250" y1="350" x2="250" y2="370" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <!-- Output -->
+                        <rect x="175" y="370" width="150" height="25" rx="5" fill="#10b981"/>
+                        <text x="250" y="388" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Final Payouts</text>
+
+                        <!-- Side annotations -->
+                        <text x="370" y="35" font-size="10" fill="#6b7280">W = K_time × K_salary</text>
+                        <text x="370" y="95" font-size="10" fill="#6b7280">Weighted avg of ratios</text>
+                        <text x="370" y="155" font-size="10" fill="#6b7280">(ΣW)² / Σ(W²)</text>
+                        <text x="370" y="215" font-size="10" fill="#6b7280">Blend local + global</text>
+                        <text x="370" y="275" font-size="10" fill="#6b7280">Benchmark / Ratio</text>
+                        <text x="370" y="335" font-size="10" fill="#6b7280">Balance in = out</text>
+                    </svg>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Step-by-Step Details</h3>
+
+            <div class="card">
+                <div class="card-title">Step 1: Calculate Weights</div>
+                <p>For each pair of employers (i, j), compute:</p>
+                <div class="formula">W_ij = exp(-Δt/τ) × exp(-(log(s_i) - log(s_j))² / 2σ²)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Step 2: Compute Expected Efficiency</div>
+                <p>For employer i's benchmark:</p>
+                <div class="formula">E(s_i) = Σ(W_ij × ratio_j) / Σ(W_ij)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Step 3: Calculate ESS</div>
+                <p>Measure data quality for employer i:</p>
+                <div class="formula">ESS_i = (Σ W_ij)² / Σ(W_ij²)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Step 4: Apply Shrinkage</div>
+                <p>Blend local and global benchmarks:</p>
+                <div class="formula">α = ESS / (ESS + 10)<br>Benchmark_i = α × E(s_i) + (1-α) × Global_Avg</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Step 5: Compute Multipliers</div>
+                <p>How employer i compares to their benchmark:</p>
+                <div class="formula">Multiplier_i = clamp(Benchmark_i / ratio_i, 0.5, 1.5)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Step 6: Zero-Sum Normalize</div>
+                <p>Adjust all multipliers so total payouts balance:</p>
+                <div class="formula">Adjustment = Σ(penalties) / Σ(bonuses)<br>Final_Multiplier = adjusted to balance</div>
+            </div>
+        </section>
+
+        <!-- SECTION: Worked Example -->
+        <section class="section" id="worked-example">
+            <h2 class="section-title">Worked Example</h2>
+
+            <p>Let's walk through a complete example with three employers.</p>
+
+            <h3 class="section-subtitle">The Employers</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employer</th>
+                            <th>Salary</th>
+                            <th>Days Ago</th>
+                            <th>Ratio</th>
+                            <th>Stake</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alice</td>
+                            <td>$150,000</td>
+                            <td>0 (today)</td>
+                            <td>20</td>
+                            <td>$3,750</td>
+                        </tr>
+                        <tr>
+                            <td>Bob</td>
+                            <td>$140,000</td>
+                            <td>10</td>
+                            <td>30</td>
+                            <td>$3,500</td>
+                        </tr>
+                        <tr>
+                            <td>Carol</td>
+                            <td>$180,000</td>
+                            <td>25</td>
+                            <td>15</td>
+                            <td>$4,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="section-subtitle">Step 1: Calculate Weights (for Alice)</h3>
+            <div class="interactive-box">
+                <p>Using τ = 30 days and σ = 0.5 for salary:</p>
+
+                <div class="card">
+                    <div class="card-title">Alice → Bob</div>
+                    <div class="formula">
+                        Time: exp(-10/30) = 0.717<br>
+                        Salary: exp(-(ln(150/140))² / 2×0.5²) = 0.989<br>
+                        <strong>Combined: 0.717 × 0.989 = 0.709</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Alice → Carol</div>
+                    <div class="formula">
+                        Time: exp(-25/30) = 0.435<br>
+                        Salary: exp(-(ln(150/180))² / 2×0.5²) = 0.929<br>
+                        <strong>Combined: 0.435 × 0.929 = 0.404</strong>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Step 2: Alice's Benchmark</h3>
+            <div class="formula">
+                E(Alice's salary) = (0.709 × 30 + 0.404 × 15) / (0.709 + 0.404)<br>
+                = (21.27 + 6.06) / 1.113<br>
+                = <strong>24.56</strong>
+            </div>
+
+            <h3 class="section-subtitle">Step 3: ESS for Alice</h3>
+            <div class="formula">
+                ESS = (0.709 + 0.404)² / (0.709² + 0.404²)<br>
+                = 1.239 / 0.666<br>
+                = <strong>1.86</strong> (very low - sparse data!)
+            </div>
+
+            <h3 class="section-subtitle">Step 4: Apply Shrinkage</h3>
+            <div class="formula">
+                α = 1.86 / (1.86 + 10) = 0.157<br>
+                Global average = 21.67 (average of all ratios)<br>
+                Final Benchmark = 0.157 × 24.56 + 0.843 × 21.67 = <strong>22.12</strong>
+            </div>
+
+            <h3 class="section-subtitle">Step 5: Alice's Multiplier</h3>
+            <div class="formula">
+                Multiplier = 22.12 / 20 = <strong>1.106</strong><br>
+                (Alice beat her benchmark, so multiplier > 1)
+            </div>
+
+            <h3 class="section-subtitle">Step 6: Final Result for Alice</h3>
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">Original Stake</div>
+                    <div class="result-value">$3,750</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Multiplier</div>
+                    <div class="result-value">1.106×</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Return</div>
+                    <div class="result-value">$4,148</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Net Gain</div>
+                    <div class="result-value" style="color: var(--color-success);">+$398</div>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                Alice hired efficiently (ratio 20 vs benchmark 22.12) and earns a bonus. The same process runs for Bob and Carol, with zero-sum normalization ensuring the numbers balance.
+            </div>
+        </section>
+
+        <!-- SECTION: Equilibrium -->
+        <section class="section" id="equilibrium">
+            <h2 class="section-title">System Equilibrium</h2>
+
+            <p>Over time, the platform converges toward a healthy equilibrium. Here's how the feedback loops work.</p>
+
+            <h3 class="section-subtitle">Candidate Learning</h3>
+            <div class="svg-container">
+                <svg viewBox="0 0 500 180" aria-label="Candidate learning cycle">
+                    <rect x="20" y="60" width="100" height="60" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                    <text x="70" y="85" text-anchor="middle" font-size="11" fill="#1f2937">Apply broadly</text>
+                    <text x="70" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(low hit rate)</text>
+
+                    <path d="M120,90 L160,90" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <rect x="170" y="60" width="100" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+                    <text x="220" y="85" text-anchor="middle" font-size="11" fill="#1f2937">Lose money</text>
+                    <text x="220" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(failed apps)</text>
+
+                    <path d="M270,90 L310,90" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <rect x="320" y="60" width="100" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="370" y="85" text-anchor="middle" font-size="11" fill="#1f2937">Learn limits</text>
+                    <text x="370" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(self-assess)</text>
+
+                    <path d="M420,90 Q460,90 460,130 Q460,160 370,160 L70,160 Q30,160 30,130 L30,120" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <text x="250" y="150" text-anchor="middle" font-size="10" fill="#10b981">Apply selectively → higher hit rate → profit</text>
+                </svg>
+            </div>
+
+            <h3 class="section-subtitle">Employer Learning</h3>
+            <div class="svg-container">
+                <svg viewBox="0 0 500 180" aria-label="Employer learning cycle">
+                    <rect x="20" y="60" width="100" height="60" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+                    <text x="70" y="85" text-anchor="middle" font-size="11" fill="#1f2937">Vague posting</text>
+                    <text x="70" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(many apps)</text>
+
+                    <path d="M120,90 L160,90" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <rect x="170" y="60" width="100" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+                    <text x="220" y="85" text-anchor="middle" font-size="11" fill="#1f2937">High ratio</text>
+                    <text x="220" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(penalized)</text>
+
+                    <path d="M270,90 L310,90" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <rect x="320" y="60" width="100" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="370" y="85" text-anchor="middle" font-size="11" fill="#1f2937">Improve JD</text>
+                    <text x="370" y="100" text-anchor="middle" font-size="10" fill="#6b7280">(be specific)</text>
+
+                    <path d="M420,90 Q460,90 460,130 Q460,160 370,160 L70,160 Q30,160 30,130 L30,120" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <text x="250" y="150" text-anchor="middle" font-size="10" fill="#10b981">Precise posting → fewer, better apps → bonus</text>
+                </svg>
+            </div>
+
+            <h3 class="section-subtitle">At Equilibrium</h3>
+            <div class="result-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="card">
+                    <div class="card-title" style="color: var(--color-primary);">Candidates</div>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Apply only to well-matched roles</li>
+                        <li>Poorly calibrated exit the system</li>
+                        <li>Quality signal maintained</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: #7c3aed;">Employers</div>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Write clear, specific descriptions</li>
+                        <li>Vague posters lose money</li>
+                        <li>Efficient matching rewarded</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <strong>The Magic:</strong> The mechanism doesn't require anyone to know the "right" price upfront. Through competitive pressure and feedback loops, the market discovers fair prices and efficient matching naturally.
+            </div>
+
+            <h3 class="section-subtitle">Summary</h3>
+            <div class="card summary-card">
+                <p style="margin-bottom: var(--spacing-md);"><strong>The platform creates a bilateral calibration market where:</strong></p>
+                <ol style="margin: 0; padding-left: 1.5rem;">
+                    <li>Candidates stake money on their self-assessed fit</li>
+                    <li>Employers stake money on their description clarity</li>
+                    <li>Well-calibrated candidates profit from poorly-calibrated ones</li>
+                    <li>Efficient employers profit from inefficient ones</li>
+                    <li>The platform takes a cut of successful matches</li>
+                    <li>Market prices emerge through iteration, not guesswork</li>
+                </ol>
+                <p style="margin-top: var(--spacing-md); margin-bottom: 0;"><strong>The mechanism requires no central authority to judge "quality."</strong> It only requires that miscalibration costs money and accuracy is rewarded. The iterated game does the rest.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ====================================
+        // THEME TOGGLE
+        // ====================================
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to system preference
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+            // Redraw dynamic SVG elements for new theme
+            if (typeof drawHeatmap === 'function') drawHeatmap();
+        }
+
+        // Initialize theme
+        setTheme(getPreferredTheme());
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
+        // ====================================
+        // NAVIGATION
+        // ====================================
+        const nav = document.getElementById('nav');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navToggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            navToggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+        });
+
+        // Close nav on link click (mobile)
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 900) {
+                    nav.classList.remove('open');
+                    navToggle.textContent = '☰';
+                }
+            });
+        });
+
+        // Highlight active section on scroll
+        const sections = document.querySelectorAll('.section');
+        const observerOptions = { rootMargin: '-20% 0px -80% 0px' };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // ====================================
+        // UTILITY FUNCTIONS
+        // ====================================
+        function formatCurrency(value) {
+            return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        function formatCurrencyDecimal(value) {
+            return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        // ====================================
+        // FEE CALCULATOR
+        // ====================================
+        const salarySlider = document.getElementById('salarySlider');
+        const salaryDisplay = document.getElementById('salaryDisplay');
+        const candidateFee = document.getElementById('candidateFee');
+        const employerStake = document.getElementById('employerStake');
+
+        function updateFeeCalculator() {
+            const salary = parseInt(salarySlider.value);
+            salaryDisplay.textContent = formatCurrency(salary);
+            candidateFee.textContent = formatCurrencyDecimal(salary * 0.00025);
+            employerStake.textContent = formatCurrency(salary * 0.025);
+        }
+
+        salarySlider.addEventListener('input', updateFeeCalculator);
+        updateFeeCalculator();
+
+        // ====================================
+        // EMPLOYER SCORING BASICS
+        // ====================================
+        const applicantsSlider = document.getElementById('applicantsSlider');
+        const acceptancesSlider = document.getElementById('acceptancesSlider');
+        const applicantsDisplay = document.getElementById('applicantsDisplay');
+        const acceptancesDisplay = document.getElementById('acceptancesDisplay');
+        const yourRatio = document.getElementById('yourRatio');
+        const returnMultiplier = document.getElementById('returnMultiplier');
+        const netResult = document.getElementById('netResult');
+
+        const MEDIAN_RATIO = 25;
+        const STAKE = 5000;
+
+        function updateEmployerScoring() {
+            const applicants = parseInt(applicantsSlider.value);
+            const acceptances = parseInt(acceptancesSlider.value);
+            const ratio = applicants / acceptances;
+            const multiplier = clamp(MEDIAN_RATIO / ratio, 0.5, 1.5);
+            const returnVal = STAKE * multiplier;
+            const net = returnVal - STAKE;
+
+            applicantsDisplay.textContent = applicants;
+            acceptancesDisplay.textContent = acceptances;
+            yourRatio.textContent = ratio.toFixed(1);
+            returnMultiplier.textContent = multiplier.toFixed(2) + '×';
+
+            if (net > 0) {
+                netResult.textContent = '+' + formatCurrency(net);
+                netResult.style.color = 'var(--color-success)';
+            } else if (net < 0) {
+                netResult.textContent = formatCurrency(net);
+                netResult.style.color = 'var(--color-danger)';
+            } else {
+                netResult.textContent = '$0';
+                netResult.style.color = 'var(--color-text)';
+            }
+        }
+
+        applicantsSlider.addEventListener('input', updateEmployerScoring);
+        acceptancesSlider.addEventListener('input', updateEmployerScoring);
+        updateEmployerScoring();
+
+        // ====================================
+        // JOB SIMULATION
+        // ====================================
+        const simApplicantsSlider = document.getElementById('simApplicantsSlider');
+        const simOffersSlider = document.getElementById('simOffersSlider');
+        const simAcceptancesSlider = document.getElementById('simAcceptancesSlider');
+        const simApplicantsDisplay = document.getElementById('simApplicantsDisplay');
+        const simOffersDisplay = document.getElementById('simOffersDisplay');
+        const simAcceptancesDisplay = document.getElementById('simAcceptancesDisplay');
+        const runSimulationBtn = document.getElementById('runSimulation');
+        const simulationContainer = document.getElementById('simulationContainer');
+
+        const FEE = 50;
+
+        simApplicantsSlider.addEventListener('input', () => {
+            simApplicantsDisplay.textContent = simApplicantsSlider.value;
+        });
+
+        simOffersSlider.addEventListener('input', () => {
+            simOffersDisplay.textContent = simOffersSlider.value;
+            const maxAcceptances = parseInt(simOffersSlider.value);
+            simAcceptancesSlider.max = maxAcceptances;
+            if (parseInt(simAcceptancesSlider.value) > maxAcceptances) {
+                simAcceptancesSlider.value = maxAcceptances;
+                simAcceptancesDisplay.textContent = maxAcceptances;
+            }
+        });
+
+        simAcceptancesSlider.addEventListener('input', () => {
+            simAcceptancesDisplay.textContent = simAcceptancesSlider.value;
+        });
+
+        function updateSimResults() {
+            const totalApplicants = parseInt(simApplicantsSlider.value);
+            const offers = parseInt(simOffersSlider.value);
+            const acceptances = parseInt(simAcceptancesSlider.value);
+            const declines = offers - acceptances;
+            const failed = totalApplicants - offers;
+
+            const feePool = totalApplicants * FEE;
+            const lostToPool = failed * FEE;
+            const bonusPerAccept = acceptances > 0 ? lostToPool / acceptances : 0;
+            const totalPayout = FEE + bonusPerAccept;
+
+            document.getElementById('simFeePool').textContent = formatCurrency(feePool);
+            document.getElementById('simLostToPool').textContent = formatCurrency(lostToPool);
+            document.getElementById('simBonusPerAccept').textContent = formatCurrency(bonusPerAccept);
+            document.getElementById('simTotalPayout').textContent = formatCurrency(totalPayout);
+        }
+
+        function runSimulation() {
+            const totalApplicants = parseInt(simApplicantsSlider.value);
+            const offers = parseInt(simOffersSlider.value);
+            const acceptances = parseInt(simAcceptancesSlider.value);
+            const declines = offers - acceptances;
+            const failed = totalApplicants - offers;
+
+            simulationContainer.innerHTML = '';
+
+            const containerWidth = simulationContainer.offsetWidth;
+            const containerHeight = simulationContainer.offsetHeight;
+
+            // Create dots
+            const dots = [];
+            for (let i = 0; i < totalApplicants; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot candidate';
+                dot.style.left = (20 + Math.random() * (containerWidth - 40)) + 'px';
+                dot.style.top = (20 + Math.random() * (containerHeight - 40)) + 'px';
+                simulationContainer.appendChild(dot);
+                dots.push(dot);
+            }
+
+            // Animate outcomes after delay
+            setTimeout(() => {
+                // Shuffle indices
+                const indices = Array.from({ length: totalApplicants }, (_, i) => i);
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+
+                // Assign outcomes
+                let acceptedCount = 0;
+                let declinedCount = 0;
+
+                indices.forEach((idx, order) => {
+                    const dot = dots[idx];
+                    const delay = order * 30;
+
+                    setTimeout(() => {
+                        if (acceptedCount < acceptances) {
+                            dot.className = 'dot accepted';
+                            dot.style.left = (containerWidth - 60 + Math.random() * 40) + 'px';
+                            dot.style.top = (containerHeight - 60 + Math.random() * 40) + 'px';
+                            acceptedCount++;
+                        } else if (declinedCount < declines) {
+                            dot.className = 'dot declined';
+                            dot.style.left = (containerWidth / 2 - 30 + Math.random() * 60) + 'px';
+                            dot.style.top = (containerHeight - 60 + Math.random() * 40) + 'px';
+                            declinedCount++;
+                        } else {
+                            dot.className = 'dot failed';
+                            dot.style.left = (20 + Math.random() * 60) + 'px';
+                            dot.style.top = (containerHeight - 60 + Math.random() * 40) + 'px';
+                        }
+                    }, delay);
+                });
+
+                updateSimResults();
+            }, 500);
+        }
+
+        runSimulationBtn.addEventListener('click', runSimulation);
+        updateSimResults();
+
+        // ====================================
+        // KERNEL FUNCTIONS - GAUSSIAN
+        // ====================================
+        const sigmaSlider = document.getElementById('sigmaSlider');
+        const sigmaDisplay = document.getElementById('sigmaDisplay');
+        const kernelCurve = document.getElementById('kernelCurve');
+        const kernelFill = document.getElementById('kernelFill');
+
+        function gaussian(x, sigma) {
+            return Math.exp(-(x * x) / (2 * sigma * sigma));
+        }
+
+        function drawKernelCurve() {
+            const sigma = parseFloat(sigmaSlider.value);
+            sigmaDisplay.textContent = sigma.toFixed(1);
+
+            const points = [];
+            const fillPoints = [];
+
+            for (let px = 50; px <= 450; px += 5) {
+                const x = (px - 250) / 80; // Map to -2.5 to 2.5
+                const y = gaussian(x, sigma);
+                const py = 170 - y * 140;
+                points.push(`${px},${py}`);
+                fillPoints.push(`${px},${py}`);
+            }
+
+            kernelCurve.setAttribute('d', 'M' + points.join(' L'));
+            kernelFill.setAttribute('d', 'M50,170 L' + fillPoints.join(' L') + ' L450,170 Z');
+        }
+
+        sigmaSlider.addEventListener('input', drawKernelCurve);
+        drawKernelCurve();
+
+        // ====================================
+        // TIME KERNEL
+        // ====================================
+        const tauSlider = document.getElementById('tauSlider');
+        const tauDisplay = document.getElementById('tauDisplay');
+        const timeCurve = document.getElementById('timeCurve');
+        const timeFill = document.getElementById('timeFill');
+
+        function timeKernel(dt, tau) {
+            return Math.exp(-dt / tau);
+        }
+
+        function drawTimeCurve() {
+            const tau = parseInt(tauSlider.value);
+            tauDisplay.textContent = tau;
+
+            const points = [];
+            const fillPoints = [];
+
+            for (let px = 50; px <= 450; px += 5) {
+                const days = (px - 50) / 400 * 120; // Map to 0-120 days
+                const y = timeKernel(days, tau);
+                const py = 170 - y * 140;
+                points.push(`${px},${py}`);
+                fillPoints.push(`${px},${py}`);
+            }
+
+            timeCurve.setAttribute('d', 'M' + points.join(' L'));
+            timeFill.setAttribute('d', 'M50,170 L' + fillPoints.join(' L') + ' L450,170 Z');
+
+            // Update weight displays
+            document.getElementById('timeWeight0').textContent = Math.round(timeKernel(0, tau) * 100) + '%';
+            document.getElementById('timeWeight7').textContent = Math.round(timeKernel(7, tau) * 100) + '%';
+            document.getElementById('timeWeight30').textContent = Math.round(timeKernel(30, tau) * 100) + '%';
+            document.getElementById('timeWeight90').textContent = Math.round(timeKernel(90, tau) * 100) + '%';
+        }
+
+        tauSlider.addEventListener('input', drawTimeCurve);
+        drawTimeCurve();
+
+        // ====================================
+        // SALARY KERNEL
+        // ====================================
+        const refSalarySlider = document.getElementById('refSalarySlider');
+        const salarySigmaSlider = document.getElementById('salarySigmaSlider');
+        const refSalaryDisplay = document.getElementById('refSalaryDisplay');
+        const salarySigmaDisplay = document.getElementById('salarySigmaDisplay');
+        const salaryCurve = document.getElementById('salaryCurve');
+        const salaryFill = document.getElementById('salaryFill');
+        const salaryRefLine = document.getElementById('salaryRefLine');
+
+        function salaryKernel(s1, s2, sigma) {
+            const logDiff = Math.log(s1) - Math.log(s2);
+            return Math.exp(-(logDiff * logDiff) / (2 * sigma * sigma));
+        }
+
+        function drawSalaryCurve() {
+            const refSalary = parseInt(refSalarySlider.value);
+            const sigma = parseFloat(salarySigmaSlider.value);
+
+            refSalaryDisplay.textContent = formatCurrency(refSalary);
+            salarySigmaDisplay.textContent = sigma.toFixed(1);
+
+            const points = [];
+            const fillPoints = [];
+            const minSalary = 30000;
+            const maxSalary = 400000;
+
+            for (let px = 50; px <= 450; px += 5) {
+                const salary = minSalary * Math.exp((px - 50) / 400 * Math.log(maxSalary / minSalary));
+                const y = salaryKernel(refSalary, salary, sigma);
+                const py = 170 - y * 140;
+                points.push(`${px},${py}`);
+                fillPoints.push(`${px},${py}`);
+            }
+
+            salaryCurve.setAttribute('d', 'M' + points.join(' L'));
+            salaryFill.setAttribute('d', 'M50,170 L' + fillPoints.join(' L') + ' L450,170 Z');
+
+            // Position reference line
+            const refX = 50 + 400 * Math.log(refSalary / minSalary) / Math.log(maxSalary / minSalary);
+            salaryRefLine.setAttribute('x1', refX);
+            salaryRefLine.setAttribute('x2', refX);
+
+            // Update comparison labels and values
+            const salary80 = refSalary * 0.8;
+            const salary50 = refSalary * 0.5;
+            const salary200 = refSalary * 2;
+
+            document.getElementById('salary80Label').textContent = formatCurrency(salary80);
+            document.getElementById('salary50Label').textContent = formatCurrency(salary50);
+            document.getElementById('salary200Label').textContent = formatCurrency(salary200);
+
+            document.getElementById('salaryWeight80').textContent = Math.round(salaryKernel(refSalary, salary80, sigma) * 100) + '%';
+            document.getElementById('salaryWeight50').textContent = Math.round(salaryKernel(refSalary, salary50, sigma) * 100) + '%';
+            document.getElementById('salaryWeight200').textContent = Math.round(salaryKernel(refSalary, salary200, sigma) * 100) + '%';
+        }
+
+        refSalarySlider.addEventListener('input', drawSalaryCurve);
+        salarySigmaSlider.addEventListener('input', drawSalaryCurve);
+        drawSalaryCurve();
+
+        // ====================================
+        // COMBINED WEIGHTS HEATMAP
+        // ====================================
+        function drawHeatmap() {
+            const heatmapCells = document.getElementById('heatmapCells');
+            heatmapCells.innerHTML = '';
+
+            const tau = 30;
+            const sigma = 0.5;
+            const cellWidth = 40;
+            const cellHeight = 30;
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 10; col++) {
+                    const days = row * 10;
+                    const salaryRatio = 0.5 + col * 0.1;
+
+                    const timeWeight = timeKernel(days, tau);
+                    const salaryWeight = salaryKernel(1, salaryRatio, sigma);
+                    const combined = timeWeight * salaryWeight;
+
+                    // Color interpolation - theme aware
+                    let color;
+                    if (isDark) {
+                        // Dark mode colors
+                        if (combined > 0.5) {
+                            const t = (combined - 0.5) * 2;
+                            color = `rgb(${Math.round(6 + t * 46)}, ${Math.round(78 + t * 133)}, ${Math.round(59 + t * 54)})`;
+                        } else if (combined > 0.2) {
+                            const t = (combined - 0.2) / 0.3;
+                            color = `rgb(${Math.round(120 - t * 114)}, ${Math.round(53 + t * 25)}, ${Math.round(15 + t * 44)})`;
+                        } else {
+                            const t = combined / 0.2;
+                            color = `rgb(${Math.round(127 - t * 7)}, ${Math.round(29 + t * 24)}, ${Math.round(29 - t * 14)})`;
+                        }
+                    } else {
+                        // Light mode colors
+                        if (combined > 0.5) {
+                            const t = (combined - 0.5) * 2;
+                            color = `rgb(${Math.round(209 - t * 40)}, ${Math.round(250 - t * 17)}, ${Math.round(229 - t * 4)})`;
+                        } else if (combined > 0.2) {
+                            const t = (combined - 0.2) / 0.3;
+                            color = `rgb(${Math.round(254 - t * 45)}, ${Math.round(243 - t * 7)}, ${Math.round(199 + t * 30)})`;
+                        } else {
+                            const t = combined / 0.2;
+                            color = `rgb(${254}, ${Math.round(226 + t * 17)}, ${Math.round(226 - t * 27)})`;
+                        }
+                    }
+
+                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', 60 + col * cellWidth);
+                    rect.setAttribute('y', 40 + row * cellHeight);
+                    rect.setAttribute('width', cellWidth);
+                    rect.setAttribute('height', cellHeight);
+                    rect.setAttribute('fill', color);
+                    rect.setAttribute('stroke', isDark ? '#374151' : '#e5e7eb');
+                    rect.setAttribute('stroke-width', '0.5');
+                    heatmapCells.appendChild(rect);
+                }
+            }
+        }
+
+        drawHeatmap();
+
+        // ====================================
+        // INITIAL SIMULATION
+        // ====================================
+        setTimeout(runSimulation, 1000);
+    </script>
+</body>
+</html>
